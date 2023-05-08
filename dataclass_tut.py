@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from dataclasses import dataclass, replace, astuple, asdict
 
 
@@ -170,8 +171,6 @@ f.access("Manager2")
 
 result = sorted([e, f])
 print(fields(e)[3].metadata)
-
-
 
 
 # Inheritance in dataclasses

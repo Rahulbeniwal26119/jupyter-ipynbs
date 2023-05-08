@@ -70,3 +70,4 @@ while not player_quits:
         screen.fill((0, 0, 0))
         obj.draw()
     pygame.display.flip()
+
