@@ -1,0 +1,1388 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+<channel>
+	<title>Planet Python</title>
+	<link>http://planetpython.org/</link>
+	<language>en</language>
+	<description>Planet Python - http://planetpython.org/</description>
+
+<item>
+	<title>Stack Abuse: Guide to Sets in Python</title>
+	<guid>https://stackabuse.com/guide-to-sets-in-python/</guid>
+	<link>https://stackabuse.com/guide-to-sets-in-python/</link>
+	<description>&lt;h3 id=&quot;introduction&quot;&gt;Introduction&lt;/h3&gt;
+&lt;p&gt;At a glance, they might seem similar to lists or dictionaries, but &lt;strong&gt;sets&lt;/strong&gt; come with their own set of properties and capabilities that make them indispensable in certain scenarios. Whether you're looking to efficiently check for membership, eliminate duplicate entries, or perform mathematical set operations, Python's set data structure has got you covered.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;In this guide, we'll take a look at sets in Python. We'll start by understanding the foundational concepts of the set data structure, and then dive into Python's specific implementation and the rich set of operations it offers. By the end, you'll have a solid grasp of when and how to use sets in your Python projects.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;understandingthesetdatastructure&quot;&gt;Understanding the Set Data Structure&lt;/h3&gt;
+&lt;p&gt;When we talk about a set in the context of data structures, we're referring to a collection of values. However, unlike lists or arrays, a set is characterized by two primary attributes - its &lt;strong&gt;elements are unordered&lt;/strong&gt;, and &lt;strong&gt;each element is unique&lt;/strong&gt;. This means that no matter how many times you try to add a duplicate value to a set, it will retain &lt;em&gt;only one&lt;/em&gt; instance of that value. The order in which you insert elements into a set is also not preserved, emphasizing the idea that sets are fundamentally unordered collections.&lt;/p&gt;
+
+            &lt;div class=&quot;alert alert-note&quot;&gt;
+                &lt;div class=&quot;flex&quot;&gt;
+                    
+                        &lt;div class=&quot;flex-shrink-0 mr-3&quot;&gt;
+                            &lt;img src=&quot;https://stackabuse.com/assets/images/icon-information-circle-solid.svg&quot; class=&quot;icon&quot; /&gt;
+                        &lt;/div&gt;
+                        
+                    &lt;div class=&quot;w-full&quot;&gt;
+            &lt;p&gt;&lt;strong&gt;Advice:&lt;/strong&gt; One of the fundamental properties of sets is that they are unordered. However, a common pitfall is assuming that sets maintain the order of elements. So, &lt;em&gt;always remember that sets do not guarantee any specific order of their elements!&lt;/em&gt;&lt;/p&gt;
+
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;p&gt;The concept of a set is not unique to Python, it's a foundational idea in mathematics. If you recall from math classes, sets were collections of distinct objects, often visualized using &lt;em&gt;Venn diagrams&lt;/em&gt;. These diagrams were particularly useful when explaining operations like unions, intersections, and differences. Similarly, in computer science, sets allow us to perform these operations with ease and efficiency.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s3.stackabuse.com/media/articles/guide-to-sets-in-python-1.png&quot; alt=&quot;venn diagram&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;You might be wondering, why would we need an unordered collection in programming? The answer is pretty simple! The answer lies in the &lt;em&gt;efficiency of certain operations&lt;/em&gt;. For instance, checking if an element exists in a set (membership test) is typically faster than checking in a list, especially as the size of the collection grows. This is because, in many implementations, sets are backed by hash tables, allowing for near constant-time lookups.&lt;/p&gt;
+&lt;p&gt;Furthermore, sets naturally handle &lt;em&gt;unique items&lt;/em&gt;. Consider a scenario where you have a list of items and you want to &lt;em&gt;remove duplicates&lt;/em&gt;. With a set, this becomes a trivial task. Simply convert the list to a set, and voilà, duplicates are automatically removed.&lt;/p&gt;
+&lt;h3 id=&quot;whyusesetsinpython&quot;&gt;Why Use Sets in Python?&lt;/h3&gt;
+&lt;p&gt;In the world of Python, where we have many different data structures like lists, dictionaries, and tuples, one might wonder where sets fit in and why one would opt to use them. The beauty of sets lies not just in their theoretical foundation, but in the practical advantages they offer to developers in various scenarios.&lt;/p&gt;
+&lt;p&gt;First and foremost, we've seen that sets excel in &lt;strong&gt;efficiency&lt;/strong&gt; when it comes to membership tests. Imagine you have a collection of thousands of items and you want to quickly check if a particular item exists within this collection. If you were using a list, you'd potentially have to traverse through each element, making the operation slower as the list grows. Sets, on the other hand, are designed to handle this very task with aplomb - checking for the existence of an element in a set is, on average, a &lt;em&gt;constant-time operation&lt;/em&gt;. This means that whether your set has ten or ten thousand elements, checking for membership remains swift.&lt;/p&gt;
+&lt;p&gt;Another compelling reason to use sets we discussed in the previous section is their inherent nature of holding &lt;strong&gt;unique items&lt;/strong&gt;. In data processing tasks, it's not uncommon to want to eliminate duplicates from a collection. With a list, you'd need to write additional logic or use other Python constructs to achieve this. With a set, deduplication is intrinsic. Simply converting a list to a set automatically removes any duplicate values, streamlining the process and making your code cleaner and more readable.&lt;/p&gt;
+&lt;p&gt;Beyond these, sets in Python are equipped to perform a variety of &lt;strong&gt;mathematical set operations&lt;/strong&gt; like &lt;em&gt;union, intersection, and difference&lt;/em&gt;. If you're dealing with tasks that require these operations, using Python's set data structure can be a game-changer. Instead of manually implementing these operations, you can leverage built-in set methods, making the code more maintainable and less error-prone.&lt;/p&gt;
+&lt;p&gt;Lastly, sets can be helpful when working on algorithms or problems where the &lt;strong&gt;order of elements is inconsequential&lt;/strong&gt;. Since sets are unordered, they allow developers to focus on the elements themselves rather than their sequence, simplifying logic and often leading to more efficient solutions.&lt;/p&gt;
+&lt;h3 id=&quot;creatingsetsinpython&quot;&gt;Creating Sets in Python&lt;/h3&gt;
+&lt;p&gt;Sets, with all their unique characteristics and advantages, are seamlessly integrated into Python, making their creation and manipulation straightforward. Let's explore the various ways to create and initialize sets in Python.&lt;/p&gt;
+&lt;p&gt;To begin with, the most direct way to create a set is by using curly braces &lt;code&gt;{}&lt;/code&gt;. For instance, &lt;code&gt;my_set = {1, 2, 3}&lt;/code&gt; initializes a set with three integer elements.&lt;/p&gt;
+
+            &lt;div class=&quot;alert alert-note&quot;&gt;
+                &lt;div class=&quot;flex&quot;&gt;
+                    
+                        &lt;div class=&quot;flex-shrink-0 mr-3&quot;&gt;
+                            &lt;img src=&quot;https://stackabuse.com/assets/images/icon-information-circle-solid.svg&quot; class=&quot;icon&quot; /&gt;
+                        &lt;/div&gt;
+                        
+                    &lt;div class=&quot;w-full&quot;&gt;
+            &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; While the curly braces syntax might remind you of &lt;em&gt;dictionaries&lt;/em&gt;, dictionaries require key-value pairs, whereas sets only contain individual elements.&lt;/p&gt;
+
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;p&gt;However, if you attempt to create a set with an empty pair of curly braces like &lt;code&gt;empty_set = {}&lt;/code&gt;, Python will interpret it as an &lt;em&gt;empty dictionary&lt;/em&gt;. To create an empty set, you'd use the &lt;code&gt;set()&lt;/code&gt; constructor without any arguments - &lt;code&gt;empty_set = set()&lt;/code&gt;.&lt;/p&gt;
+
+            &lt;div class=&quot;alert alert-note&quot;&gt;
+                &lt;div class=&quot;flex&quot;&gt;
+                    
+                        &lt;div class=&quot;flex-shrink-0 mr-3&quot;&gt;
+                            &lt;img src=&quot;https://stackabuse.com/assets/images/icon-information-circle-solid.svg&quot; class=&quot;icon&quot; /&gt;
+                        &lt;/div&gt;
+                        
+                    &lt;div class=&quot;w-full&quot;&gt;
+            &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Sets require their elements to be hashable, which means you can't use mutable types like lists or dictionaries as set elements. If you need a set-like structure with lists, consider using a &lt;code&gt;frozenset&lt;/code&gt;.&lt;/p&gt;
+
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;p&gt;Speaking of the &lt;code&gt;set()&lt;/code&gt; constructor, it's a versatile tool that can convert other iterable data structures into sets. For example, if you have a list with some duplicate elements and you want to deduplicate it, you can pass the list to the &lt;code&gt;set()&lt;/code&gt; constructor:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;my_list = [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;]
+unique_set = &lt;span class=&quot;hljs-built_in&quot;&gt;set&lt;/span&gt;(my_list)
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(unique_set)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {1, 2, 3, 4}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;As you can see, the &lt;em&gt;duplicates from the list are automatically removed&lt;/em&gt; in the resulting set.&lt;/p&gt;
+&lt;p&gt;Once you've created a set, &lt;em&gt;&lt;strong&gt;adding elements&lt;/strong&gt;&lt;/em&gt; to it is a breeze. The &lt;code&gt;add()&lt;/code&gt; method allows you to insert a new element. For instance, &lt;code&gt;unique_set.add(5)&lt;/code&gt; would add the integer &lt;code&gt;5&lt;/code&gt; to our previously created set.&lt;/p&gt;
+
+            &lt;div class=&quot;alert alert-note&quot;&gt;
+                &lt;div class=&quot;flex&quot;&gt;
+                    
+                        &lt;div class=&quot;flex-shrink-0 mr-3&quot;&gt;
+                            &lt;img src=&quot;https://stackabuse.com/assets/images/icon-information-circle-solid.svg&quot; class=&quot;icon&quot; /&gt;
+                        &lt;/div&gt;
+                        
+                    &lt;div class=&quot;w-full&quot;&gt;
+            &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Remember that sets, by their very nature, only store unique elements. If you try to add an element that's already present in the set, Python will not raise an error, but the set will remain unchanged.&lt;/p&gt;
+
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;h3 id=&quot;basicoperationswithsets&quot;&gt;Basic Operations with Sets&lt;/h3&gt;
+&lt;p&gt;Now that we know what sets are and how to create them in Python, let's take a look at some of the most basic operations we can perform on sets in Python.&lt;/p&gt;
+&lt;h4 id=&quot;addingelementstheaddmethod&quot;&gt;Adding Elements: The &lt;em&gt;add()&lt;/em&gt; Method&lt;/h4&gt;
+&lt;p&gt;As we seen above, once you've created a set, adding new elements to it is straightforward. The &lt;code&gt;add()&lt;/code&gt; method allows you to insert a new element into the set:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;fruits = {&lt;span class=&quot;hljs-string&quot;&gt;&quot;apple&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;&quot;banana&quot;&lt;/span&gt;, &lt;span class=&quot;hljs-string&quot;&gt;&quot;cherry&quot;&lt;/span&gt;}
+fruits.add(&lt;span class=&quot;hljs-string&quot;&gt;&quot;date&quot;&lt;/span&gt;)
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(fruits)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;, &quot;date&quot;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;However, if you try to add an element that's already present in the set, the set remains unchanged, reflecting the uniqueness property of sets.&lt;/p&gt;
+&lt;h4 id=&quot;removingelementstheremovemethod&quot;&gt;Removing Elements: The &lt;em&gt;remove()&lt;/em&gt; Method&lt;/h4&gt;
+&lt;p&gt;To remove an element from a set, you can use the &lt;code&gt;remove()&lt;/code&gt; method. It deletes the specified item from the set:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;fruits.remove(&lt;span class=&quot;hljs-string&quot;&gt;&quot;banana&quot;&lt;/span&gt;)
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(fruits)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {&quot;apple&quot;, &quot;cherry&quot;, &quot;date&quot;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+            &lt;div class=&quot;alert alert-note&quot;&gt;
+                &lt;div class=&quot;flex&quot;&gt;
+                    
+                        &lt;div class=&quot;flex-shrink-0 mr-3&quot;&gt;
+                            &lt;img src=&quot;https://stackabuse.com/assets/images/icon-information-circle-solid.svg&quot; class=&quot;icon&quot; /&gt;
+                        &lt;/div&gt;
+                        
+                    &lt;div class=&quot;w-full&quot;&gt;
+            &lt;p&gt;&lt;strong&gt;Be Cautious:&lt;/strong&gt; If the element is not found in the set, the &lt;code&gt;remove()&lt;/code&gt; method will raise a &lt;code&gt;KeyError&lt;/code&gt;.&lt;/p&gt;
+
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;h4 id=&quot;safelyremovingelementsthediscardmethod&quot;&gt;Safely Removing Elements: The &lt;em&gt;discard()&lt;/em&gt; Method&lt;/h4&gt;
+&lt;p&gt;If you're unsure whether an element is present in the set and want to avoid potential errors, the &lt;code&gt;discard()&lt;/code&gt; method comes to the rescue. It removes the specified element if it's present, but if it's not, the method &lt;em&gt;does nothing&lt;/em&gt; and &lt;em&gt;doesn't raise an error&lt;/em&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;fruits.discard(&lt;span class=&quot;hljs-string&quot;&gt;&quot;mango&quot;&lt;/span&gt;)  &lt;span class=&quot;hljs-comment&quot;&gt;# No error, even though &quot;mango&quot; isn't in the set&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;emptyingthesettheclearmethod&quot;&gt;Emptying the Set: The &lt;em&gt;clear()&lt;/em&gt; Method&lt;/h4&gt;
+&lt;p&gt;There might be situations where you want to remove all elements from a set, effectively emptying it. The &lt;code&gt;clear()&lt;/code&gt; method allows you to do just that:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;fruits.clear()
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(fruits)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: set()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;determiningsetsizethelenfunction&quot;&gt;Determining Set Size: The &lt;em&gt;len()&lt;/em&gt; Function&lt;/h4&gt;
+&lt;p&gt;To find out how many elements are in a set, you can use the built-in &lt;code&gt;len()&lt;/code&gt; function, just as you would with lists or dictionaries:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;numbers = {&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;}
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(&lt;span class=&quot;hljs-built_in&quot;&gt;len&lt;/span&gt;(numbers))  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: 5&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;checkingmembershiptheinkeyword&quot;&gt;Checking Membership: The &lt;em&gt;in&lt;/em&gt; Keyword&lt;/h4&gt;
+&lt;p&gt;One of the most common operations with sets is checking for membership. To determine if a particular element exists within a set, you can use the &lt;code&gt;in&lt;/code&gt; keyword:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;&lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;hljs-string&quot;&gt;&quot;apple&quot;&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; fruits:
+    &lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&quot;Apple is in the set!&quot;&lt;/span&gt;)
+&lt;span class=&quot;hljs-keyword&quot;&gt;else&lt;/span&gt;:
+    &lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(&lt;span class=&quot;hljs-string&quot;&gt;&quot;Apple is not in the set.&quot;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This operation is particularly efficient with sets, especially when compared to lists, making it one of the primary reasons developers opt to use sets in certain scenarios.&lt;/p&gt;
+&lt;p&gt;In this section, we've covered the fundamental operations you can perform with sets in Python. These operations form the building blocks for more advanced set manipulations and are crucial for effective set management in your programs.&lt;/p&gt;
+
+            &lt;div class=&quot;alert alert-note&quot;&gt;
+                &lt;div class=&quot;flex&quot;&gt;
+                    
+                        &lt;div class=&quot;flex-shrink-0 mr-3&quot;&gt;
+                            &lt;img src=&quot;https://stackabuse.com/assets/images/icon-information-circle-solid.svg&quot; class=&quot;icon&quot; /&gt;
+                        &lt;/div&gt;
+                        
+                    &lt;div class=&quot;w-full&quot;&gt;
+            &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Modifying a set while iterating over it can lead to unpredictable behavior. Instead, consider iterating over a copy of the set or using set comprehensions.&lt;/p&gt;
+
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;h3 id=&quot;advancedsetoperations&quot;&gt;Advanced Set Operations&lt;/h3&gt;
+&lt;p&gt;Besides basic set operations, Python provides us with some advanced operations further highlight the power and flexibility of sets in Python. They allow for intricate manipulations and comparisons between sets, making them invaluable tools in various computational tasks, from data analysis to algorithm design. Let's take a look at some of them!&lt;/p&gt;
+&lt;h4 id=&quot;combiningsetstheunionmethodandoperator&quot;&gt;Combining Sets: The &lt;em&gt;union()&lt;/em&gt; Method and &lt;em&gt;|&lt;/em&gt; Operator&lt;/h4&gt;
+&lt;p&gt;Imagine you have two sets - A and B. The &lt;strong&gt;union&lt;/strong&gt; of these two sets is a set that contains all the unique elements from both A and B. &lt;em&gt;It's like merging the two sets together and removing any duplicates&lt;/em&gt;. Simple as that!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s3.stackabuse.com/media/articles/guide-to-sets-in-python-2.png&quot; alt=&quot;set union&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;The &lt;code&gt;union()&lt;/code&gt; method and the &lt;code&gt;|&lt;/code&gt; operator both allow you to achieve this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;a = {&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;}
+b = {&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;}
+combined_set = a.union(b)
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(combined_set)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {1, 2, 3, 4, 5}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Alternatively, using the &lt;code&gt;|&lt;/code&gt; operator:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;combined_set = a | b
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(combined_set)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {1, 2, 3, 4, 5}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;findingcommonelementstheintersectionmethodandoperator&quot;&gt;Finding Common Elements: The &lt;em&gt;intersection()&lt;/em&gt; Method and &lt;em&gt;&amp;amp;&lt;/em&gt; Operator&lt;/h4&gt;
+&lt;p&gt;The &lt;strong&gt;intersection&lt;/strong&gt; of these two sets is a set that contains only the &lt;em&gt;elements that are common to both A and B&lt;/em&gt;. It's like finding the overlapping or shared songs between the two playlists. Only the genres that both you and your friend enjoy will be in the intersection!&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s3.stackabuse.com/media/articles/guide-to-sets-in-python-3.png&quot; alt=&quot;set intersection 1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;To find elements that are common to two or more sets, you can use the &lt;code&gt;intersection()&lt;/code&gt; method:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;common_elements = a.intersection(b)
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(common_elements)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {3}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Or you can use the &lt;code&gt;&amp;amp;&lt;/code&gt; operator:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;common_elements = a &amp;amp; b
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(common_elements)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {3}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;elementsinonesetbutnotinanotherthedifferencemethodandoperator&quot;&gt;Elements in One Set but Not in Another: The &lt;em&gt;difference()&lt;/em&gt; Method and &lt;em&gt;-&lt;/em&gt; Operator&lt;/h4&gt;
+&lt;p&gt;The &lt;strong&gt;difference&lt;/strong&gt; of set A from set B is a set that contains all the elements that are &lt;em&gt;in A but not in B&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://s3.stackabuse.com/media/articles/guide-to-sets-in-python-4.png&quot; alt=&quot;set intersection 2&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;If you want to find elements that are present in one set but not in another, the &lt;code&gt;difference()&lt;/code&gt; method comes in handy:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;diff_elements = a.difference(b)
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(diff_elements)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {1, 2}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Also, you can use the &lt;code&gt;-&lt;/code&gt; operator:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;diff_elements = a - b
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(diff_elements)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {1, 2}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;checkingsubsetsandsupersetstheissubsetandissupersetmethods&quot;&gt;Checking Subsets and Supersets: The &lt;em&gt;issubset()&lt;/em&gt; and &lt;em&gt;issuperset()&lt;/em&gt; Methods&lt;/h4&gt;
+&lt;p&gt;To determine if all elements of one set are present in another set (i.e., if one set is a subset of another), you can use the &lt;code&gt;issubset()&lt;/code&gt; method:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;x = {&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;}
+y = {&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;}
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(x.issubset(y))  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Conversely, to check if a set encompasses all elements of another set (i.e., if one set is a superset of another), the &lt;code&gt;issuperset()&lt;/code&gt; method is used:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(y.issuperset(x))  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;setcomprehensions&quot;&gt;Set Comprehensions&lt;/h3&gt;
+&lt;p&gt;Python, known for its elegant syntax and readability, offers a feature called &quot;comprehensions&quot; for creating collections in a concise manner. While &lt;a target=&quot;_blank&quot; href=&quot;https://stackabuse.com/list-comprehensions-in-python/&quot;&gt;list comprehensions&lt;/a&gt; might be more familiar to many, set comprehensions are equally powerful and allow for the creation of sets using a similar syntax.&lt;/p&gt;
+&lt;p&gt;A set comprehension provides a succinct way to generate a set by iterating over an iterable, potentially including conditions to filter or modify the elements. Just take a look at the basic structure of a set comprehension:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;{expression &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; item &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; iterable &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; condition}
+&lt;/code&gt;&lt;/pre&gt;
+
+            &lt;div class=&quot;alert alert-note&quot;&gt;
+                &lt;div class=&quot;flex&quot;&gt;
+                    
+                        &lt;div class=&quot;flex-shrink-0 mr-3&quot;&gt;
+                            &lt;img src=&quot;https://stackabuse.com/assets/images/icon-information-circle-solid.svg&quot; class=&quot;icon&quot; /&gt;
+                        &lt;/div&gt;
+                        
+                    &lt;div class=&quot;w-full&quot;&gt;
+            &lt;p&gt;&lt;strong&gt;Note:&lt;/strong&gt; Try not to mix up the set comprehensions with dictionary comprehensions - dictionaries need to have a &lt;code&gt;key_expr: value_expr&lt;/code&gt; pair instead of a single&lt;code&gt;expression&lt;/code&gt;.&lt;/p&gt;
+
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;p&gt;Let's take a look at several examples to illustrate the usage of the set comprehensions. Suppose you want to create a set of squares for numbers from 0 to 4. You can use set comprehensions in the following way:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;squares = {x**&lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; x &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;hljs-built_in&quot;&gt;range&lt;/span&gt;(&lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;)}
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(squares)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {0, 1, 4, 9, 16}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Another usage of the set comprehensions is &lt;em&gt;filtering data&lt;/em&gt; from other collections. Let's say you have a list and you want to create a set containing only the odd numbers from the list we crated in the previous example:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;numbers = [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;6&lt;/span&gt;]
+even_numbers = {x &lt;span class=&quot;hljs-keyword&quot;&gt;for&lt;/span&gt; x &lt;span class=&quot;hljs-keyword&quot;&gt;in&lt;/span&gt; numbers &lt;span class=&quot;hljs-keyword&quot;&gt;if&lt;/span&gt; x % &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt; != &lt;span class=&quot;hljs-number&quot;&gt;0&lt;/span&gt;}
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(even_numbers)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: {1, 3, 5}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;All-in-all, set comprehensions, like their list counterparts, are not only concise but also often more readable than their traditional loop equivalents. They're especially useful when you want to generate a set based on some transformation or filtering of another iterable.&lt;/p&gt;
+&lt;h3 id=&quot;frozensetsimmutablesetsinpython&quot;&gt;Frozen Sets: Immutable Sets in Python&lt;/h3&gt;
+&lt;p&gt;While sets are incredibly versatile and useful, they come with one &lt;em&gt;limitation&lt;/em&gt; - they are &lt;strong&gt;mutable&lt;/strong&gt;. This means that once a set is created, you can modify its contents. However, there are scenarios in programming where you might need an immutable version of a set. Enter the &lt;code&gt;frozenset&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;A &lt;code&gt;frozenset&lt;/code&gt; is, as the name suggests, a frozen version of a set. It retains all the properties of a set, but you can't add or remove elements once it's created. This immutability comes with its own set of advantages.&lt;/p&gt;
+&lt;p&gt;First of all, since &lt;code&gt;frozensets&lt;/code&gt; are immutable, they are &lt;strong&gt;hashable&lt;/strong&gt;. This means you can use a &lt;code&gt;frozenset&lt;/code&gt; as a key in a dictionary, which is not possible with a regular set. Another useful feature of a &lt;code&gt;frozenset&lt;/code&gt; is that you can have a &lt;code&gt;frozenset&lt;/code&gt; as an element within another set, allowing for nested set structures.&lt;/p&gt;
+&lt;h4 id=&quot;howtocreateafrozenset&quot;&gt;How to Create a Frozen Set?&lt;/h4&gt;
+&lt;p&gt;Creating a &lt;code&gt;frozenset&lt;/code&gt; is straightforward using the &lt;code&gt;frozenset()&lt;/code&gt; constructor:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;numbers = [&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;]
+frozen_numbers = &lt;span class=&quot;hljs-built_in&quot;&gt;frozenset&lt;/span&gt;(numbers)
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(frozen_numbers)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: frozenset({1, 2, 3, 4, 5})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Remember, once created, you cannot modify the &lt;code&gt;frozenset&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;frozen_numbers.add(&lt;span class=&quot;hljs-number&quot;&gt;6&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will raise an &lt;code&gt;AttributeError&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;AttributeError: 'frozenset' object has no attribute 'add'
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;operationswithfrozensets&quot;&gt;Operations with Frozen Sets&lt;/h4&gt;
+&lt;p&gt;Most set operations that don't modify the set, like union, intersection, and difference, can be performed on &lt;code&gt;frozensets&lt;/code&gt;:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;hljs&quot;&gt;a = &lt;span class=&quot;hljs-built_in&quot;&gt;frozenset&lt;/span&gt;([&lt;span class=&quot;hljs-number&quot;&gt;1&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;2&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;])
+b = &lt;span class=&quot;hljs-built_in&quot;&gt;frozenset&lt;/span&gt;([&lt;span class=&quot;hljs-number&quot;&gt;3&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;4&lt;/span&gt;, &lt;span class=&quot;hljs-number&quot;&gt;5&lt;/span&gt;])
+
+union_set = a.union(b)
+&lt;span class=&quot;hljs-built_in&quot;&gt;print&lt;/span&gt;(union_set)  &lt;span class=&quot;hljs-comment&quot;&gt;# Outputs: frozenset({1, 2, 3, 4, 5})&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h3&gt;
+&lt;p&gt;From simple tasks like removing duplicates from a list to more complex operations like mathematical set manipulations, sets provide a robust solution, making many tasks simpler and more efficient.&lt;/p&gt;
+&lt;p&gt;Throughout this guide, we've journeyed from the foundational concepts of the set data structure to Python's specific implementation and its rich set of functionalities. We've also touched upon the potential pitfalls and common mistakes to be wary of.&lt;/p&gt;</description>
+	<pubDate>Wed, 18 Oct 2023 15:39:52 +0000</pubDate>
+</item>
+<item>
+	<title>Real Python: Python's F-String for String Interpolation and Formatting</title>
+	<guid>https://realpython.com/python-f-strings/</guid>
+	<link>https://realpython.com/python-f-strings/</link>
+	<description>&lt;div&gt;&lt;p&gt;Python &lt;strong&gt;f-strings&lt;/strong&gt; provide a quick way to &lt;strong&gt;interpolate&lt;/strong&gt; and &lt;strong&gt;format&lt;/strong&gt; strings. They’re readable, concise, and less prone to error than traditional string interpolation and formatting tools, such as the &lt;code&gt;.format()&lt;/code&gt; method and the modulo operator (&lt;code&gt;%&lt;/code&gt;). An f-string is also a bit faster than those tools!&lt;/p&gt;
+&lt;p&gt;By the end of this tutorial, you’ll know why f-strings are such a powerful tool that you should learn and master as a Python developer.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;In this tutorial, you’ll learn how to:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Interpolate&lt;/strong&gt; values, objects, and expressions into your strings using &lt;strong&gt;f-strings&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Format&lt;/strong&gt; f-strings using Python’s &lt;strong&gt;string formatting mini-language&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Leverage some &lt;strong&gt;cool features&lt;/strong&gt; of f-strings in Python 3.12 and beyond&lt;/li&gt;
+&lt;li&gt;Decide when to use &lt;strong&gt;traditional interpolation&lt;/strong&gt; tools instead of &lt;strong&gt;f-strings&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To get the most out of this tutorial, you should be familiar with Python’s &lt;a href=&quot;https://realpython.com/python-strings/&quot;&gt;string&lt;/a&gt; data type. It’s also be beneficial to have experience with other string interpolation tools like the modulo operator (&lt;code&gt;%&lt;/code&gt;) and the &lt;code&gt;.format()&lt;/code&gt; method.&lt;/p&gt;
+&lt;div class=&quot;alert alert-warning&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Get Your Code:&lt;/strong&gt; &lt;a href=&quot;https://realpython.com/bonus/python-f-string-code/&quot; class=&quot;alert-link&quot;&gt;Click here to download the free sample code&lt;/a&gt; that shows you how to do string interpolation and formatting with Python’s f-strings.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h2 id=&quot;interpolating-and-formatting-strings-before-python-36&quot;&gt;Interpolating and Formatting Strings Before Python 3.6&lt;a class=&quot;headerlink&quot; href=&quot;https://realpython.com/atom.xml#interpolating-and-formatting-strings-before-python-36&quot; title=&quot;Permanent link&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Before Python 3.6, you had two main tools for interpolating values, variables, and expressions inside string literals:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The &lt;a href=&quot;https://docs.python.org/3/library/stdtypes.html#printf-style-string-formatting&quot;&gt;string interpolation operator&lt;/a&gt; (&lt;code&gt;%&lt;/code&gt;), or modulo operator&lt;/li&gt;
+&lt;li&gt;The &lt;a href=&quot;https://docs.python.org/3/library/stdtypes.html#str.format&quot;&gt;&lt;code&gt;str.format()&lt;/code&gt;&lt;/a&gt; method&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;You’ll get a refresher on these two string interpolation tools in the following sections. You’ll also learn about the string formatting capabilities that these tools offer in Python.&lt;/p&gt;
+&lt;h3 id=&quot;the-modulo-operator&quot;&gt;The Modulo Operator, &lt;code&gt;%&lt;/code&gt;&lt;a class=&quot;headerlink&quot; href=&quot;https://realpython.com/atom.xml#the-modulo-operator&quot; title=&quot;Permanent link&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The modulo operator (&lt;code&gt;%&lt;/code&gt;) was the first tool for string interpolation and formatting in Python and has been in the language since the beginning. Here’s what using this operator looks like in practice:&lt;/p&gt;
+&lt;div class=&quot;highlight python repl&quot;&gt;&lt;span class=&quot;repl-toggle&quot; title=&quot;Toggle REPL prompts and output&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jane&quot;&lt;/span&gt;
+
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;!&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;'Hello, Jane!'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this quick example, you use the &lt;code&gt;%&lt;/code&gt; operator to interpolate the value of your &lt;code&gt;name&lt;/code&gt; variable into a string literal. The interpolation operator takes two operands:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;A string literal containing one or more conversion specifiers&lt;/li&gt;
+&lt;li&gt;The object or objects that you’re interpolating into the string literal&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;strong&gt;conversion specifiers&lt;/strong&gt; work as replacement fields. In the above example, you use the &lt;code&gt;%s&lt;/code&gt; combination of characters as a conversion specifier. The &lt;code&gt;%&lt;/code&gt; symbol marks the start of the specifier, while the &lt;code&gt;s&lt;/code&gt; letter is the &lt;strong&gt;conversion type&lt;/strong&gt; and tells the operator that you want to convert the input object into a string.&lt;/p&gt;
+&lt;p&gt;If you want to insert more than one object into your target string, then you can use a &lt;a href=&quot;https://realpython.com/python-tuple/&quot;&gt;tuple&lt;/a&gt;. Note that the number of objects in the tuple must match the number of format specifiers in the string:&lt;/p&gt;
+&lt;div class=&quot;highlight python repl&quot;&gt;&lt;span class=&quot;repl-toggle&quot; title=&quot;Toggle REPL prompts and output&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jane&quot;&lt;/span&gt;
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;
+
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;! You're &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; years old.&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;age&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;'Hello, Jane! You're 25 years old.'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In this example, you use a tuple of values as the right-hand operand to &lt;code&gt;%&lt;/code&gt;. Note that you’ve used a string and an integer. Because you use the &lt;code&gt;%s&lt;/code&gt; specifier, Python converts both objects to strings.&lt;/p&gt;
+&lt;p&gt;You can also use dictionaries as the right-hand operand in your interpolation expressions. To do this, you need to create conversion specifiers that enclose key names in parentheses:&lt;/p&gt;
+&lt;div class=&quot;highlight python repl&quot;&gt;&lt;span class=&quot;repl-toggle&quot; title=&quot;Toggle REPL prompts and output&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Hello, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%(name)s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;! You're &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%(age)s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt; years old.&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;name&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Jane&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;age&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;&quot;Hello, Jane! You're 25 years old.&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This syntax provides a readable approach to string interpolation with the &lt;code&gt;%&lt;/code&gt; operator. You can use descriptive key names instead of relying on the positional order of values.&lt;/p&gt;
+&lt;p&gt;When you use the &lt;code&gt;%&lt;/code&gt; operator for string interpolation, you can use conversion specifiers. They provide some string formatting capabilities that take advantage of &lt;strong&gt;conversion types&lt;/strong&gt;, &lt;strong&gt;conversion flags&lt;/strong&gt;, and some characters like the period (&lt;code&gt;.&lt;/code&gt;) and the asterisk (&lt;code&gt;*&lt;/code&gt;). Consider the following example:&lt;/p&gt;
+&lt;div class=&quot;highlight python repl&quot;&gt;&lt;span class=&quot;repl-toggle&quot; title=&quot;Toggle REPL prompts and output&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Balance: $&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%.2f&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;mf&quot;&gt;5425.9292&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;'Balance: $5425.93'&lt;/span&gt;
+
+&lt;span class=&quot;gp&quot;&gt;&amp;gt;&amp;gt;&amp;gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Name: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%s&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;Age: &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;%5s&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;John&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;35&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Name: John&lt;/span&gt;
+&lt;span class=&quot;go&quot;&gt;Age:    35&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;In the first example, you use the &lt;code&gt;%.2f&lt;/code&gt; conversion specifier to represent currency values. The &lt;code&gt;f&lt;/code&gt; letter tells the operator to convert to a floating-point number. The &lt;code&gt;.2&lt;/code&gt; part defines the precision to use when converting the input. In the second example, you use &lt;code&gt;%5s&lt;/code&gt; to align the age value five positions to the right.&lt;/p&gt;
+&lt;/div&gt;&lt;h2&gt;&lt;a href=&quot;https://realpython.com/python-f-strings/?utm_source=realpython&amp;utm_medium=rss&quot;&gt;Read the full article at https://realpython.com/python-f-strings/ »&lt;/a&gt;&lt;/h2&gt;
+        &lt;hr /&gt;
+        &lt;p&gt;&lt;em&gt;[ Improve Your Python With 🐍 Python Tricks 💌 – Get a short &amp;amp; sweet Python Trick delivered to your inbox every couple of days. &lt;a href=&quot;https://realpython.com/python-tricks/?utm_source=realpython&amp;utm_medium=rss&amp;utm_campaign=footer&quot;&gt;&amp;gt;&amp;gt; Click here to learn more and see examples&lt;/a&gt; ]&lt;/em&gt;&lt;/p&gt;</description>
+	<pubDate>Wed, 18 Oct 2023 14:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>Django Weblog: Nominations for 2023 Malcolm Tredinnick Memorial Prize</title>
+	<guid>https://www.djangoproject.com/weblog/2023/oct/18/nominations-for-2023-malcolm-tredinnick-memorial-p/</guid>
+	<link>https://www.djangoproject.com/weblog/2023/oct/18/nominations-for-2023-malcolm-tredinnick-memorial-p/</link>
+	<description>&lt;p&gt;Hello Everyone!&lt;/p&gt;
+
+&lt;p&gt;It is that time of year again when we recognize someone from our community in memory of our friend Malcolm.&lt;/p&gt;
+
+&lt;p&gt;Malcolm was an early core contributor to Django and had both a huge influence and impact on Django as we know it today. Besides being knowledgeable he was also especially friendly to new users and contributors. He exemplified what it means to be an amazing Open Source contributor. We still miss him to this day.&lt;/p&gt;
+
+&lt;p&gt;The &lt;a href=&quot;https://www.djangoproject.com/foundation/prizes/&quot;&gt;DSF Prize&lt;/a&gt; page summarizes the prize nicely:&lt;/p&gt;
+
+&lt;p&gt;The Malcolm Tredinnick Memorial Prize is a monetary prize, awarded annually, to the person who best exemplifies the spirit of Malcolm’s work - someone who welcomes, supports, and nurtures newcomers; freely gives feedback and assistance to others, and helps to grow the community. The hope is that the recipient of the award will use the award stipend as a contribution to travel to a community event -- a DjangoCon, a PyCon, a sprint -- and continue in Malcolm’s footsteps.&lt;/p&gt;
+
+We will take nominations until Wednesday, November 8th, 2023, AoE, and will announce the winner soon after the next DSF Board meeting in December.
+
+Please make your nominations using this &lt;a href=&quot;https://forms.gle/N21Uq9EKPgqNjojY9&quot;&gt;google form&lt;/a&gt;.
+
+If you have any questions please reach out to the DSF Board at &lt;a href=&quot;mailto:foundation@djangoproject.com&quot;&gt;foundation@djangoproject.com&lt;/a&gt;.</description>
+	<pubDate>Wed, 18 Oct 2023 13:46:10 +0000</pubDate>
+</item>
+<item>
+	<title>TechBeamers Python: Python Append String Tutorial</title>
+	<guid>https://www.techbeamers.com/python-append-string/</guid>
+	<link>https://www.techbeamers.com/python-append-string/</link>
+	<description>&lt;p&gt;This tutorial deep dives into how Python appends strings using different ways. Appending a string in Python means adding one string to the end of another string. This is a common task in programming, and there are a few different ways to do it in Python. Introduction to Different Methods to Append Strings in Python [...]&lt;/p&gt;
+&lt;p&gt;The post &lt;a rel=&quot;nofollow&quot; href=&quot;https://www.techbeamers.com/python-append-string/&quot;&gt;Python Append String Tutorial&lt;/a&gt; appeared first on &lt;a rel=&quot;nofollow&quot; href=&quot;https://www.techbeamers.com&quot;&gt;TechBeamers&lt;/a&gt;.&lt;/p&gt;</description>
+	<pubDate>Wed, 18 Oct 2023 09:22:57 +0000</pubDate>
+</item>
+<item>
+	<title>TechBeamers Python: Reverse a String in Python</title>
+	<guid>https://www.techbeamers.com/reverse-a-string-in-python/</guid>
+	<link>https://www.techbeamers.com/reverse-a-string-in-python/</link>
+	<description>&lt;p&gt;In Python, reversing a string can be a useful operation in various programming tasks. Reversed strings are commonly used for tasks like checking for palindromes, text processing, and data manipulation. In this tutorial, we will explore different methods to reverse a string in Python. We will provide code examples and compare these methods to help [...]&lt;/p&gt;
+&lt;p&gt;The post &lt;a rel=&quot;nofollow&quot; href=&quot;https://www.techbeamers.com/reverse-a-string-in-python/&quot;&gt;Reverse a String in Python&lt;/a&gt; appeared first on &lt;a rel=&quot;nofollow&quot; href=&quot;https://www.techbeamers.com&quot;&gt;TechBeamers&lt;/a&gt;.&lt;/p&gt;</description>
+	<pubDate>Wed, 18 Oct 2023 02:41:37 +0000</pubDate>
+</item>
+<item>
+	<title>PyCoder’s Weekly: Issue #599 (Oct. 17, 2023)</title>
+	<guid>https://pycoders.com/issues/599</guid>
+	<link>https://pycoders.com/issues/599</link>
+	<description>&lt;p&gt; &lt;span&gt;#599 – OCTOBER 17, 2023&lt;/span&gt;&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/issues/599/feed&quot;&gt;View in Browser »&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;p&gt;&lt;a href=&quot;https://pycoders.com&quot;&gt;&lt;img alt=&quot;The PyCoder&amp;rsquo;s Weekly Logo&quot; src=&quot;https://cdn.pycoders.com/37bdf31dc645f968ffb90196e5d38ff5&quot; /&gt;&lt;/a&gt;&lt;/p&gt; &lt;hr /&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11642/feed&quot; target=&quot;_blank&quot;&gt;How to Sort Unicode Strings Alphabetically in Python&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; In this tutorial, you&amp;rsquo;ll learn how to correctly sort Unicode strings in Python while avoiding common pitfalls. You&amp;rsquo;ll explore powerful third-party libraries implementing the complete Unicode Collation Algorithm (UCA), as well as standard library modules and a few handmade solutions.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11642/feed&quot; target=&quot;_blank&quot;&gt;REAL PYTHON&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11629/feed&quot; target=&quot;_blank&quot;&gt;6 Cool Things You Can Do With the &lt;code&gt;functools&lt;/code&gt; Module&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; The &lt;code&gt;functools&lt;/code&gt; module in the standard library has all sorts of useful bits and pieces. This article talks about six of them: caching, writing fewer dunder methods, freeze functions, generic functions, better decorators, and &lt;code&gt;reduce()&lt;/code&gt;.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11629/feed&quot; target=&quot;_blank&quot;&gt;BOB BELDERBOS&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11619/feed&quot; target=&quot;_blank&quot;&gt;Automate LLM Backend Deployments Using Infrastructure as Code&lt;/a&gt;&lt;/h3&gt; &lt;a href=&quot;https://pycoders.com/link/11619/feed&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;https://cdn.pycoders.com/2f20bd59e87591f1803e5bd91233348f&quot; alt=&quot;alt&quot; /&gt;&lt;/a&gt; &lt;p&gt; New GitHub project to provision, update, and destroy the cloud infrastructure for a LLM backend using infrastructure as code (Python). Deployment options include deploying &lt;a href=&quot;https://pycoders.com/link/11619/feed&quot; target=&quot;_blank&quot;&gt;Hugging Face models to Docker (local), Runpod, and Azure →&lt;/a&gt;&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11619/feed&quot; target=&quot;_blank&quot;&gt;PULUMI&lt;/a&gt;&lt;/span&gt; &lt;span&gt;sponsor&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11654/feed&quot; target=&quot;_blank&quot;&gt;Accepting Payments With Stripe, Vue.js, and Flask&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; If you&amp;rsquo;re building a site to make money, at some point you have to collect money. This tutorial shows you how to build a Flask application that integrates with Stripe for payment processing through the Vue.js framework.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11654/feed&quot; target=&quot;_blank&quot;&gt;MICHAEL HERMAN&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11644/feed&quot; target=&quot;_blank&quot;&gt;Python Wins the NEC C&amp;amp;C Foundation Award&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11644/feed&quot; target=&quot;_blank&quot;&gt;NEC.COM&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;h2&gt;Discussions&lt;/h2&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11625/feed&quot; target=&quot;_blank&quot;&gt;Best Practices for Performance in Django?&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11625/feed&quot; target=&quot;_blank&quot;&gt;DJANGO SOFTWARE FOUNDATION&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;h2&gt;Python Jobs&lt;/h2&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11645/feed&quot; target=&quot;_blank&quot;&gt;Senior Full Stack Developer (Vancouver, BC, Canada)&lt;/a&gt;&lt;/h3&gt; &lt;p&gt;&lt;a href=&quot;https://pycoders.com/link/11645/feed&quot; target=&quot;_blank&quot;&gt;Maax.ai&lt;/a&gt;&lt;/p&gt; &lt;p&gt;&lt;a href=&quot;https://www.pythonjobshq.com?utm_source=newsletter&amp;utm_campaign=pycoders599&amp;utm_medium=feed&quot; target=&quot;_blank&quot;&gt;More Python Jobs &amp;gt;&amp;gt;&amp;gt;&lt;/a&gt;&lt;/p&gt; &lt;h2&gt;Articles &amp;amp; Tutorials&lt;/h2&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11653/feed&quot; target=&quot;_blank&quot;&gt;Using Python&amp;rsquo;s &lt;code&gt;min()&lt;/code&gt; and &lt;code&gt;max()&lt;/code&gt;&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; In this video course, you&amp;rsquo;ll learn how to use Python&amp;rsquo;s built-in &lt;code&gt;min()&lt;/code&gt; and &lt;code&gt;max()&lt;/code&gt; functions to find the smallest and largest values. You&amp;rsquo;ll also learn how to modify their standard behavior by providing a suitable key function. Finally, you&amp;rsquo;ll code a few practical examples of using &lt;code&gt;min()&lt;/code&gt; and &lt;code&gt;max()&lt;/code&gt;.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11653/feed&quot; target=&quot;_blank&quot;&gt;REAL PYTHON&lt;/a&gt;&lt;/span&gt; &lt;span&gt;course&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11624/feed&quot; target=&quot;_blank&quot;&gt;Django Things You Want With HTMX&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; HTMX is allowing more dynamic pages to be built with less JavaScript than before. This blog post talks about three techniques you can use to improve your HTMX pages when working with Django: HTTP 303 redirections, the django-htmx library, and using the hx-trigger header.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11624/feed&quot; target=&quot;_blank&quot;&gt;BITE CODE&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11638/feed&quot; target=&quot;_blank&quot;&gt;When I Met Guido Van Rossum&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; This personal blog post by Adarsh recounts his conversations with Guido at PyCasades back in the spring. They talked about the how to get better at Python and what it takes to become a core developer.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11638/feed&quot; target=&quot;_blank&quot;&gt;ADARSH DIVAKARAN&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11626/feed&quot; target=&quot;_blank&quot;&gt;The Future of Data Science Told by 79,306 People&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; Data science is thought of as a growing field, but can you prove it? By using the results of both the 2021 and 2022 Python Developers survey, this article shows how the field is growing and changing.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11626/feed&quot; target=&quot;_blank&quot;&gt;MAHA TAQI&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11622/feed&quot; target=&quot;_blank&quot;&gt;Building a RisingWave Connector for Django ORM&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; This articles shows the internals of the Django ORM. We build a prototype for a connector to the RisingWave event streaming database and enable dashboarding capabilities in Django&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11622/feed&quot; target=&quot;_blank&quot;&gt;BAS&lt;/a&gt; • Shared by &lt;a href=&quot;https://pycoders.com/link/11621/feed&quot; target=&quot;_blank&quot;&gt;Bas&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11637/feed&quot; target=&quot;_blank&quot;&gt;Configure Your MicroPython Project With JSON Files&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; Learn how to get your microcontroller to remember your settings, so you can quickly get it back in working state even if it loses power or reboots!&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11637/feed&quot; target=&quot;_blank&quot;&gt;BHAVESH KAKWANI&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11628/feed&quot; target=&quot;_blank&quot;&gt;Python Variables: Namespaces and Variable Scope&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; This post is a comprehensive guide on namespaces and variable scope. Learn about the four different name spaces and how to access each.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11628/feed&quot; target=&quot;_blank&quot;&gt;MUHAMMAD RAZA&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11650/feed&quot; target=&quot;_blank&quot;&gt;Autodiff Puzzles&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; &amp;ldquo;This notebook contains a series of self-contained puzzles for learning about derivatives in tensor libraries.&amp;rdquo;&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11650/feed&quot; target=&quot;_blank&quot;&gt;SASHA RUSH&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11627/feed&quot; target=&quot;_blank&quot;&gt;PyTimeTK Basics&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; An introduction to the &lt;code&gt;pytimetk&lt;/code&gt; library and how you can use it to handle time series analysis.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11627/feed&quot; target=&quot;_blank&quot;&gt;BUSINESS-SCIENCE.GITHUB.IO&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11656/feed&quot; target=&quot;_blank&quot;&gt;Innovate Faster With Ready-Made Edge AI Reference Kits&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; Build AI solutions that run efficiently at the edge. Raise throughput, lower latency, and speed up AI inference with the OpenVINO toolkit and our Edge AI Reference Kits.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11656/feed&quot; target=&quot;_blank&quot;&gt;INTEL CORPORATION&lt;/a&gt;&lt;/span&gt; &lt;span&gt;sponsor&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11640/feed&quot; target=&quot;_blank&quot;&gt;Python&amp;rsquo;s &lt;code&gt;yield&lt;/code&gt; and Generators Explained&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; Learn about &lt;code&gt;yield&lt;/code&gt; and how generators can make your code more performant.&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11640/feed&quot; target=&quot;_blank&quot;&gt;ERIK O&amp;#x27;SHAUGHNESSY&lt;/a&gt; • Shared by &lt;a href=&quot;https://pycoders.com/link/11652/feed&quot; target=&quot;_blank&quot;&gt;Bob&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11647/feed&quot; target=&quot;_blank&quot;&gt;Python Score&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; A quick little web site to evaluate your Python basic syntax knowledge&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11647/feed&quot; target=&quot;_blank&quot;&gt;JPGLOMOT.COM&lt;/a&gt; • Shared by Jean-Philippe Glomot&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;h2&gt;Projects &amp;amp; Code&lt;/h2&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11651/feed&quot; target=&quot;_blank&quot;&gt;build123d: A Python CAD Programming Library&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11651/feed&quot; target=&quot;_blank&quot;&gt;GITHUB.COM/GUMYR&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11643/feed&quot; target=&quot;_blank&quot;&gt;humanhash: Human-Readable Digests&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11643/feed&quot; target=&quot;_blank&quot;&gt;GITHUB.COM/ZACHARYVOASE&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11620/feed&quot; target=&quot;_blank&quot;&gt;logmerger: TUI for Log Files With Merged Timeline&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11620/feed&quot; target=&quot;_blank&quot;&gt;GITHUB.COM/PTMCG&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11633/feed&quot; target=&quot;_blank&quot;&gt;pipeless-ai: Open-Source Computer Vision Framework&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11633/feed&quot; target=&quot;_blank&quot;&gt;GITHUB.COM/PIPELESS-AI&lt;/a&gt; • Shared by &lt;a href=&quot;https://pycoders.com/link/11646/feed&quot; target=&quot;_blank&quot;&gt;Miguel Angel Cabrera&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11648/feed&quot; target=&quot;_blank&quot;&gt;magentic: Seamlessly Integrate LLMs as Python Functions&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11648/feed&quot; target=&quot;_blank&quot;&gt;GITHUB.COM/JACKMPCOLLINS&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;h2&gt;Events&lt;/h2&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11639/feed&quot; target=&quot;_blank&quot;&gt;Weekly Real Python Office Hours Q&amp;amp;A (Virtual)&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; October 18, 2023&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11639/feed&quot; target=&quot;_blank&quot;&gt;REALPYTHON.COM&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11631/feed&quot; target=&quot;_blank&quot;&gt;PyData Bristol Meetup&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; October 19, 2023&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11631/feed&quot; target=&quot;_blank&quot;&gt;MEETUP.COM&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11623/feed&quot; target=&quot;_blank&quot;&gt;PyLadies Dublin&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; October 19, 2023&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11623/feed&quot; target=&quot;_blank&quot;&gt;PYLADIES.COM&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11635/feed&quot; target=&quot;_blank&quot;&gt;Chattanooga Python User Group&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; October 20 to October 21, 2023&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11635/feed&quot; target=&quot;_blank&quot;&gt;MEETUP.COM&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11649/feed&quot; target=&quot;_blank&quot;&gt;EduPy 2023&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; October 21 to October 22, 2023&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11649/feed&quot; target=&quot;_blank&quot;&gt;SLEC.NET&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11630/feed&quot; target=&quot;_blank&quot;&gt;PyDay Cali 2023&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; October 21 to October 22, 2023&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11630/feed&quot; target=&quot;_blank&quot;&gt;PYDAY.CO&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11641/feed&quot; target=&quot;_blank&quot;&gt;PackagingCon 2023&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; October 26 to October 29, 2023&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11641/feed&quot; target=&quot;_blank&quot;&gt;PACKAGING-CON.ORG&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;div&gt; &lt;h3&gt;&lt;a href=&quot;https://pycoders.com/link/11632/feed&quot; target=&quot;_blank&quot;&gt;PyCon APAC 2023&lt;/a&gt;&lt;/h3&gt; &lt;p&gt; October 27 to October 29, 2023&lt;br /&gt; &lt;span&gt;&lt;a href=&quot;https://pycoders.com/link/11632/feed&quot; target=&quot;_blank&quot;&gt;PYCON.JP&lt;/a&gt;&lt;/span&gt; &lt;/p&gt; &lt;/div&gt; &lt;hr /&gt; &lt;p&gt;Happy Pythoning!&lt;br /&gt;This was PyCoder&amp;rsquo;s Weekly Issue #599.&lt;br /&gt;&lt;a href=&quot;https://pycoders.com/issues/599/feed&quot;&gt;View in Browser »&lt;/a&gt;&lt;/p&gt; &lt;img src=&quot;https://pycoders.com/issues/599/open/feed&quot; width=&quot;1&quot; height=&quot;1&quot; alt=&quot;alt&quot; /&gt; 
+        &lt;hr /&gt;
+        &lt;p&gt;&lt;em&gt;[ Subscribe to 🐍 PyCoder&amp;rsquo;s Weekly 💌 – Get the best Python news, articles, and tutorials delivered to your inbox once a week &lt;a href=&quot;https://pycoders.com/?utm_source=pycoders&amp;utm_medium=feed&amp;utm_campaign=footer&quot;&gt;&amp;gt;&amp;gt; Click here to learn more&lt;/a&gt; ]&lt;/em&gt;&lt;/p&gt;</description>
+	<pubDate>Tue, 17 Oct 2023 19:30:00 +0000</pubDate>
+</item>
+<item>
+	<title>Real Python: Python Basics Exercises: Object-Oriented Programming</title>
+	<guid>https://realpython.com/courses/object-oriented-programming-exercises/</guid>
+	<link>https://realpython.com/courses/object-oriented-programming-exercises/</link>
+	<description>&lt;p&gt;In &lt;a href=&quot;https://realpython.com/courses/python-basics-oop/&quot;&gt;Python Basics: Object-Oriented Programming&lt;/a&gt;, you learned how OOP, or object-oriented programming, is a method of structuring a program by bundling related properties and behaviors into individual objects.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;In this video course, you&amp;rsquo;ll practice the following:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Create a &lt;strong&gt;&lt;code&gt;class&lt;/code&gt;&lt;/strong&gt;, which is like a blueprint for creating an object&lt;/li&gt;
+&lt;li&gt;Use classes to create new &lt;strong&gt;objects&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Instantiate classes with &lt;strong&gt;attributes&lt;/strong&gt; and &lt;strong&gt;methods&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Use dunder methods like &lt;strong&gt;init&lt;/strong&gt;() and &lt;strong&gt;str&lt;/strong&gt;()&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This video course is part of the Python Basics series, which accompanies &lt;a href=&quot;https://realpython.com/products/python-basics-book/&quot;&gt;&lt;em&gt;Python Basics: A Practical Introduction to Python 3&lt;/em&gt;&lt;/a&gt;. You can also check out the other &lt;a href=&quot;https://realpython.com/learning-paths/python-basics/&quot;&gt;Python Basics courses&lt;/a&gt;. &lt;/p&gt;
+&lt;p&gt;Note that you&amp;rsquo;ll be using &lt;a href=&quot;https://realpython.com/python-idle/&quot;&gt;IDLE&lt;/a&gt; to &lt;a href=&quot;https://realpython.com/interacting-with-python/&quot;&gt;interact with Python&lt;/a&gt; throughout this course.&lt;/p&gt;
+        &lt;hr /&gt;
+        &lt;p&gt;&lt;em&gt;[ Improve Your Python With 🐍 Python Tricks 💌 – Get a short &amp;amp; sweet Python Trick delivered to your inbox every couple of days. &lt;a href=&quot;https://realpython.com/python-tricks/?utm_source=realpython&amp;utm_medium=rss&amp;utm_campaign=footer&quot;&gt;&amp;gt;&amp;gt; Click here to learn more and see examples&lt;/a&gt; ]&lt;/em&gt;&lt;/p&gt;</description>
+	<pubDate>Tue, 17 Oct 2023 14:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>Python Bytes: #357 Python 3.7 EOLed, We Hadn't Noticed</title>
+	<guid>https://pythonbytes.fm/episodes/show/357/python-3.7-eoled-we-hadnt-noticed</guid>
+	<link>https://pythonbytes.fm/episodes/show/357/python-3.7-eoled-we-hadnt-noticed</link>
+	<description>&amp;lt;strong&amp;gt;Topics covered in this episode:&amp;lt;/strong&amp;gt;&amp;lt;br&amp;gt;
+
+&amp;lt;ul&amp;gt;
+	&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://github.com/glyph/QuickMacHotKey&quot;&amp;gt;&amp;lt;strong&amp;gt;QuickMacHotKey&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://simonwillison.net/2023/Sep/30/cli-tools-python/&quot;&amp;gt;&amp;lt;strong&amp;gt;Things I’ve learned about building CLI tools in Python&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://www.warp.dev&quot;&amp;gt;&amp;lt;strong&amp;gt;Warp Terminal&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;strong&amp;gt;(&amp;lt;/strong&amp;gt;&amp;lt;a href=&quot;https://app.warp.dev/referral/96PYZY&quot;&amp;gt;&amp;lt;strong&amp;gt;referral code&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;strong&amp;gt;)&amp;lt;/strong&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://devguide.python.org/versions/&quot;&amp;gt;&amp;lt;strong&amp;gt;Python 3.7 EOLed, but I hadn’t noticed&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Extras&amp;lt;/strong&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;strong&amp;gt;Joke&amp;lt;/strong&amp;gt;&amp;lt;/li&amp;gt;
+
+&amp;lt;/ul&amp;gt;&amp;lt;a href='https://www.youtube.com/watch?v=DUieu4BSAD8' style='font-weight: bold;'&amp;gt;Watch on YouTube&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;About the show&amp;lt;/strong&amp;gt;&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;Sponsored by us! Support our work through:&amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;Our &amp;lt;a href=&quot;https://training.talkpython.fm/&quot;&amp;gt;&amp;lt;strong&amp;gt;courses at Talk Python Training&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://pythonpeople.fm&quot;&amp;gt;&amp;lt;strong&amp;gt;Python People&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; Podcast&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://www.patreon.com/pythonbytes&quot;&amp;gt;&amp;lt;strong&amp;gt;Patreon Supporters&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Connect with the hosts&amp;lt;/strong&amp;gt;&amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;Michael: &amp;lt;a href=&quot;https://fosstodon.org/@mkennedy&quot;&amp;gt;&amp;lt;strong&amp;gt;@mkennedy@fosstodon.org&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Brian: &amp;lt;a href=&quot;https://fosstodon.org/@brianokken&quot;&amp;gt;&amp;lt;strong&amp;gt;@brianokken@fosstodon.org&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Show: &amp;lt;a href=&quot;https://fosstodon.org/@pythonbytes&quot;&amp;gt;&amp;lt;strong&amp;gt;@pythonbytes@fosstodon.org&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;p&amp;gt;Join us on YouTube at &amp;lt;a href=&quot;https://pythonbytes.fm/stream/live&quot;&amp;gt;&amp;lt;strong&amp;gt;pythonbytes.fm/live&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; to be part of the audience. Usually Tuesdays at 11am PT. Older video versions available there too.&amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Michael #1:&amp;lt;/strong&amp;gt; &amp;lt;a href=&quot;https://github.com/glyph/QuickMacHotKey&quot;&amp;gt;&amp;lt;strong&amp;gt;QuickMacHotKey&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;This is a set of minimal Python bindings for the undocumented macOS framework APIs that even &amp;lt;a href=&quot;https://github.com/cocoabits/MASShortcut/blob/6f2603c6b6cc18f64a799e5d2c9d3bbc467c413a/Framework/Monitoring/MASHotKey.m#L21-L22&quot;&amp;gt;the most modern, sandboxing-friendly shortcut-binding frameworks&amp;lt;/a&amp;gt; use under the hood for actually binding global hotkeys.&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Thinking of updating my &amp;lt;a href=&quot;https://github.com/mikeckennedy/urlify&quot;&amp;gt;urlify menubar app&amp;lt;/a&amp;gt;.&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Brian #2:&amp;lt;/strong&amp;gt; &amp;lt;a href=&quot;https://simonwillison.net/2023/Sep/30/cli-tools-python/&quot;&amp;gt;&amp;lt;strong&amp;gt;Things I’ve learned about building CLI tools in Python&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;Simon Willison&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://github.com/simonw/click-app&quot;&amp;gt;A cool Cookiecutter starter project&amp;lt;/a&amp;gt;, if you like Click. &amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Conventions and consistency in commands, arguments, options, and flags.&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;The importance of versioning. Your CLI is an API.&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Include examples in &amp;lt;code&amp;gt;--help&amp;lt;/code&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Include &amp;lt;code&amp;gt;--help&amp;lt;/code&amp;gt; in documentation.&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Aside, &amp;lt;a href=&quot;https://pypi.org/project/typer/&quot;&amp;gt;Typer&amp;lt;/a&amp;gt; is also cool, and is built on Click.&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Michael #3:&amp;lt;/strong&amp;gt;  &amp;lt;a href=&quot;https://www.warp.dev&quot;&amp;gt;&amp;lt;strong&amp;gt;Warp Terminal&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;strong&amp;gt;(&amp;lt;/strong&amp;gt;&amp;lt;a href=&quot;https://app.warp.dev/referral/96PYZY&quot;&amp;gt;&amp;lt;strong&amp;gt;referral code&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;strong&amp;gt;)&amp;lt;/strong&amp;gt;&amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;Really nice reimagining of the terminal 
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;Currently macOS only but will be Linux, then Windows&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;New command section &amp;amp;amp; output section mode&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Blocks can be navigated and searched as a single thing (even if it’s 1,000 lines of output)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;CTRL+R gives a nice history like McFly I’ve discussed before&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Completions into popular CLIs (i.e. git)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Edit like an editor (even you VIM people 🙂 )&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Has AI built in too&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Free for individuals&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;If you’re going to give it a try, use &amp;lt;a href=&quot;https://app.warp.dev/referral/96PYZY&quot;&amp;gt;&amp;lt;strong&amp;gt;my referral&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; I guess?&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Brian #4:&amp;lt;/strong&amp;gt; &amp;lt;a href=&quot;https://devguide.python.org/versions/&quot;&amp;gt;&amp;lt;strong&amp;gt;Python 3.7 EOLed, but I hadn’t noticed&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;EOL was June 27&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;I’m still supporting 3.7, as are most projects I work with. But I’m not sure when that will change.&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://devblogs.microsoft.com/python/python-in-visual-studio-code-october-2023-release/#deprecation-of-python-3-7-support&quot;&amp;gt;VS Code is deprecating 3.7 support&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Why I’m ok with supporting 3.7 for some projects
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;dataclasses came in with 3.7&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;code&amp;gt;from __ future__ import annotations&amp;lt;/code&amp;gt; allows the use of union types with &amp;lt;code&amp;gt;X|Y&amp;lt;/code&amp;gt;.&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://github.com/okken/pytest-param-scope/blob/main/src/pytest_param_scope/plugin.py&quot;&amp;gt;example&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;I’ll probably drop 3.7 as my dependent projects drop it.&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Extras&amp;lt;/strong&amp;gt; &amp;lt;/p&amp;gt;
+
+&amp;lt;p&amp;gt;Brian:&amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://github.com/okken/pytest-param-scope&quot;&amp;gt;&amp;lt;strong&amp;gt;pytest-param-scope&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; is an in progress hack to workaround this missing scope. 
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;Runs setup before any param test cases, and teardown after the last one.&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://blog.josh.tel/2023/09/29/stop-defining-people-by-what-theyre-not-on-non-code-contributors/&quot;&amp;gt;&amp;lt;strong&amp;gt;Stop defining people by what they’re not: on “non-code contributors”&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; - Josh Simmons&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;p&amp;gt;Michael:&amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://developers.slashdot.org/story/23/10/08/0414238/openai-to-release-its-python-sdk&quot;&amp;gt;&amp;lt;strong&amp;gt;OpenAI has unveiled the Beta version of its Python SDK&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; (via Mark Little)&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;StackOverflow &amp;lt;a href=&quot;https://techcrunch.com/2023/10/17/stack-overflow-cuts-28-of-its-staff/?guccounter=1&quot;&amp;gt;&amp;lt;strong&amp;gt;lays off 28% of its staff&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;Weird follow up of their &amp;lt;a href=&quot;https://stackoverflow.blog/2023/03/19/whats-different-about-these-layoffs/&quot;&amp;gt;“what to do if you’re laid off” post&amp;lt;/a&amp;gt; from 6 months ago?&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;Is AI eating into their traffic?&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;ArsTechnica &amp;lt;a href=&quot;https://arstechnica.com/?p=1976310&quot;&amp;gt;&amp;lt;strong&amp;gt;has thoughts&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; too&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;
+
+&amp;lt;p&amp;gt;&amp;lt;strong&amp;gt;Joke:&amp;lt;/strong&amp;gt; &amp;lt;/p&amp;gt;
+
+&amp;lt;ul&amp;gt;
+&amp;lt;li&amp;gt;&amp;lt;a href=&quot;https://tech.lgbt/@nliz/111193884424695678?kjy=spring&quot;&amp;gt;&amp;lt;strong&amp;gt;Define&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;a href=&quot;https://tech.lgbt/@nliz/111193884424695678?kjy=spring&quot;&amp;gt;&amp;lt;strong&amp;gt;&amp;lt;em&amp;gt;hot&amp;lt;/em&amp;gt;&amp;lt;/strong&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;
+&amp;lt;li&amp;gt;New Zoo exhibit&amp;lt;/li&amp;gt;
+&amp;lt;/ul&amp;gt;</description>
+	<pubDate>Tue, 17 Oct 2023 08:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>PyBites: Our Concern with Programming Certifications</title>
+	<guid>https://pybit.es/articles/our-concern-with-programming-certifications/</guid>
+	<link>https://pybit.es/articles/our-concern-with-programming-certifications/</link>
+	<description>&lt;p&gt;In our new podcast episode, recorded in Córdoba, Spain, we talk about programming certifications and how they might not represent real developer skills.&lt;/p&gt;
+
+
+
+&lt;p&gt;Watch it on our YouTube channel:&lt;/p&gt;
+
+
+
+&lt;div class=&quot;wp-block-embed__wrapper&quot;&gt;
+
+&lt;/div&gt;
+
+
+
+&lt;p&gt;Or listen here:&lt;/p&gt;
+
+
+
+&lt;div id=&quot;buzzsprout-player-13792592&quot;&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;Chapters:&lt;br /&gt;00:00 Intro&lt;br /&gt;01:01 Wins&lt;br /&gt;02:57 About programmer certifications&lt;br /&gt;04:14 Concern 1. Do they stand the test of time?&lt;br /&gt;06:52 Concern 2. Theory, where is the implementation?&lt;br /&gt;09:35 Anther practical example of seeking ability over certificate&lt;br /&gt;12:00 Wrap up, why it&amp;#8217;s important to show your skills!&lt;br /&gt;13:30 Pybites is going to address this gap &lt;img src=&quot;https://s.w.org/images/core/emoji/14.0.0/72x72/1f642.png&quot; alt=&quot;🙂&quot; class=&quot;wp-smiley&quot; /&gt;&lt;br /&gt;14:20 Wrapping up, how the Spain road trip is going&lt;br /&gt;15:42 Outro music&lt;/p&gt;
+
+
+
+&lt;p&gt;Stay tuned for our new certifications that will prove that you have tangible skills that a real world Python developer is expected to have these days.&lt;/p&gt;
+
+
+
+&lt;p&gt;And/or already &lt;a href=&quot;https://pybit.es/&quot;&gt;join one of our coaching programs&lt;/a&gt; to be ready when we launch them (our certificates will be backward compatible!)&lt;/p&gt;</description>
+	<pubDate>Tue, 17 Oct 2023 06:12:41 +0000</pubDate>
+</item>
+<item>
+	<title>Seth Michael Larson: Quarterly report for Q3 2023 on the PSF Blog</title>
+	<guid>http://sethmlarson.dev/security-developer-in-residence-weekly-report-15?date=2023-10-17</guid>
+	<link>http://sethmlarson.dev/security-developer-in-residence-weekly-report-15?date=2023-10-17</link>
+	<description>Quarterly report for Q3 2023 on the PSF Blog
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+&lt;div class=&quot;header&quot;&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      &lt;a href=&quot;http://sethmlarson.dev/&quot;&gt;About&lt;/a&gt; |
+      &lt;a href=&quot;http://sethmlarson.dev/blog&quot;&gt;Blog&lt;/a&gt; |
+      &lt;a href=&quot;https://tinyletter.com/sethmlarson&quot;&gt;Newsletter&lt;/a&gt; |
+      &lt;a href=&quot;http://sethmlarson.dev/links&quot;&gt;Links&lt;/a&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+      
+&lt;h1&gt;Quarterly report for Q3 2023 on the PSF Blog&lt;/h1&gt;
+&lt;p&gt;Published 2023-10-17 by &lt;strong&gt;Seth Larson&lt;/strong&gt;&lt;br /&gt;
+Reading time:  minutes&lt;/p&gt;
+
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;container&quot;&gt;
+
+&lt;blockquote&gt;
+  &lt;center&gt;This critical role would not be possible without funding from the &lt;a href=&quot;https://alpha-omega.dev&quot;&gt;OpenSSF Alpha-Omega Project&lt;/a&gt;.
+  Massive thank-you to Alpha-Omega for investing in the security of the Python ecosystem!&lt;/center&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It's hard to believe, but I've been in the Security Developer-in-Residence position for 3 months now! 🥳
+This is the first quarterly report for Q3 of 2023 on the many accomplishments so far and future projects
+that I aim to tackle in the role. You can read the full report on the &lt;a href=&quot;https://pyfound.blogspot.com/2023/10/security-developer-in-residence-2023-q3-report.html&quot;&gt;Python Software Foundation blog&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the report I identified three flagship projects that I'm looking to work on this upcoming quarter:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Software Bill-of-Materials for CPython&lt;/li&gt;
+&lt;li&gt;Tracking bundled dependencies in Python packages&lt;/li&gt;
+&lt;li&gt;CPython and pip release process improvements&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You should read the full report especially the section under &quot;Future Projects&quot; if you're interested in any of these topics! A lot of this week has been taken up by writing this report, so there won't be much else to report here this week.&lt;/p&gt;
+
+&lt;h2&gt;Other items&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;The CPython core developer sprint happened last week, I've been following along with all the social media posts. Very exciting stuff about the C API.
+I'll be meeting with the CPython Developer-in-Residence &lt;a href=&quot;https://lukasz.langa.pl/&quot;&gt;Łukasz&lt;/a&gt; to talk about everything that happened at the sprints and what's relevant to my work.&lt;/li&gt;
+&lt;li&gt;pip v23.3 released with the following relevant changes:
+&lt;ul&gt;
+&lt;li&gt;Truststore was vendored which means you no longer need to bootstrap Truststore in order to use &lt;a href=&quot;https://pip.pypa.io/en/stable/topics/https-certificates/#using-system-certificate-stores&quot;&gt;pip's optional Truststore support&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Upgraded the vendored certifi to not be vulnerable to &lt;a href=&quot;https://github.com/advisories/GHSA-xqr8-7jwr-rhp7&quot;&gt;GHSA-xqr8-7jwr-rhp7&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Secure Transport support has been removed from pip due to pip no longer supporting an OpenSSL version that required it (1.0.1 and earlier).&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;That's all for this week! 👋 If you're interested in more you can read &lt;a href=&quot;http://sethmlarson.dev/security-developer-in-residence-weekly-report-14&quot;&gt;last week's report&lt;/a&gt;.&lt;/p&gt;
+
+&lt;blockquote&gt;
+    &lt;p&gt;&lt;strong&gt;Wow, you made it to the end!&lt;/strong&gt;&lt;/p&gt;
+    &lt;p&gt;
+        If you're like me, you don't believe social media should be &lt;em&gt;the way&lt;/em&gt; to get updates on the cool stuff your friends are up to.
+        Instead, you should either follow my blog via the &lt;a href=&quot;http://sethmlarson.dev/feed&quot;&gt;RSS feed&lt;/a&gt; or the &lt;a href=&quot;https://tinyletter.com/sethmlarson&quot;&gt;email newsletter&lt;/a&gt; for guaranteed article publication notifications.
+    &lt;/p&gt;
+    &lt;p&gt;
+        If you really enjoyed a piece I would be grateful if you shared with a friend. If you have follow-up thoughts you can send them via email.
+    &lt;/p&gt;
+    &lt;p&gt;
+        &lt;strong&gt;Thanks for reading!&lt;/strong&gt;&lt;br /&gt; — Seth
+    &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;/div&gt;</description>
+	<pubDate>Tue, 17 Oct 2023 00:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>Real Python: Build a Blog From Scratch With Django</title>
+	<guid>https://realpython.com/build-a-blog-from-scratch-django/</guid>
+	<link>https://realpython.com/build-a-blog-from-scratch-django/</link>
+	<description>&lt;div&gt;&lt;p&gt;There are plenty of blogging platforms out there that you can use out of the box. However, building your own blog from scratch with Django is a great way to keep control over your content. Even if you’re just getting started with Django, its user-friendly features will allow you to focus on designing and posting your content.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;In this tutorial, you’ll learn how to:&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Set up a new &lt;strong&gt;Django project&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Create and edit &lt;strong&gt;blog posts&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Display posts&lt;/strong&gt; to the user&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Assign categories&lt;/strong&gt; to posts&lt;/li&gt;
+&lt;li&gt;Allow users to &lt;strong&gt;comment on posts&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Along the way, you’ll leverage the Django admin site and explore how to work with forms in Django. This is an ideal project to dip your toes into the world of Django, but you should have a solid foundation in &lt;a href=&quot;https://realpython.com/learning-paths/python-basics/&quot;&gt;Python basics&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;At the end of this tutorial, you’ll be able to share your knowledge through a working blog that you’ve built from scratch. If you’re curious about how the final &lt;strong&gt;source code&lt;/strong&gt; looks, then you can click the link below:&lt;/p&gt;
+&lt;div class=&quot;alert alert-warning&quot;&gt;
+&lt;p&gt;&lt;strong&gt;Get Your Code:&lt;/strong&gt; &lt;a href=&quot;https://realpython.com/bonus/build-a-blog-from-scratch-django-code/&quot; class=&quot;alert-link&quot;&gt;Click here to download your free source code&lt;/a&gt; to build a blog from scratch with Django.&lt;/p&gt;
+&lt;/div&gt;
+&lt;h3 id=&quot;set-up-the-development-environment&quot;&gt;Set Up the Development Environment&lt;a class=&quot;headerlink&quot; href=&quot;https://realpython.com/atom.xml#set-up-the-development-environment&quot; title=&quot;Permanent link&quot;&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Whenever you’re starting a new web development project, it’s a good idea to first set up your development environment. Create a new directory for your project to live in, and &lt;code&gt;cd&lt;/code&gt; into it:&lt;/p&gt;
+&lt;div class=&quot;highlight sh&quot;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;mkdir&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;django-blog
+&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;django-blog
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Once you’re inside the &lt;code&gt;django-blog/&lt;/code&gt; directory, it’s a good idea to create a &lt;a href=&quot;https://realpython.com/python-virtual-environments-a-primer/&quot;&gt;virtual environment&lt;/a&gt; to manage dependencies. Select your &lt;strong&gt;operating system&lt;/strong&gt; below and use your platform-specific command to set up a virtual environment:&lt;/p&gt;
+&lt;ul class=&quot;nav nav-tabs justify-content-end js-platform-widget-tabs&quot;&gt;
+
+  &lt;li class=&quot;nav-item mb-0 js-platform-widget-tab-windows&quot;&gt;
+    &lt;a class=&quot;nav-link link-unstyled text-body active small&quot; id=&quot;windows-tab-1&quot; href=&quot;https://realpython.com/atom.xml#windows-1&quot;&gt;&lt;i class=&quot;fa fa-windows text-muted mr-1&quot;&gt;&lt;/i&gt;Windows&lt;/a&gt;
+  &lt;/li&gt;
+
+
+
+
+  &lt;li class=&quot;nav-item mb-0 js-platform-widget-tab-linuxmacos&quot;&gt;
+    &lt;a class=&quot;nav-link link-unstyled text-body small&quot; id=&quot;macos-tab-1&quot; href=&quot;https://realpython.com/atom.xml#linux-macos-1&quot;&gt;&lt;i class=&quot;fa fa-linux text-muted mr-1&quot;&gt;&lt;/i&gt;&lt;i class=&quot;fa fa-apple text-muted mr-1&quot;&gt;&lt;/i&gt;Linux + macOS&lt;/a&gt;
+  &lt;/li&gt;
+
+&lt;/ul&gt;
+&lt;div class=&quot;tab-content mt-2 mb-0 js-platform-widget-content&quot;&gt;
+&lt;div class=&quot;tab-pane fade show active&quot; id=&quot;windows-1&quot;&gt;
+&lt;div class=&quot;highlight pscon&quot;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;PS&amp;gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;python&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;venv&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;venv&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;tab-pane fade &quot; id=&quot;linux-macos-1&quot;&gt;
+&lt;div class=&quot;highlight sh&quot;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;python&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;-m&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;venv&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;venv
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;This command will create a &lt;code&gt;venv/&lt;/code&gt; folder in your working directory. Inside this directory, you’ll find several files, including a copy of the Python standard library. Later, when you install new dependencies, this directory will store them too. Next, you need to activate the virtual environment by running the following command:&lt;/p&gt;
+&lt;ul class=&quot;nav nav-tabs justify-content-end js-platform-widget-tabs&quot;&gt;
+
+  &lt;li class=&quot;nav-item mb-0 js-platform-widget-tab-windows&quot;&gt;
+    &lt;a class=&quot;nav-link link-unstyled text-body active small&quot; id=&quot;windows-tab-2&quot; href=&quot;https://realpython.com/atom.xml#windows-2&quot;&gt;&lt;i class=&quot;fa fa-windows text-muted mr-1&quot;&gt;&lt;/i&gt;Windows&lt;/a&gt;
+  &lt;/li&gt;
+
+
+
+
+  &lt;li class=&quot;nav-item mb-0 js-platform-widget-tab-linuxmacos&quot;&gt;
+    &lt;a class=&quot;nav-link link-unstyled text-body small&quot; id=&quot;macos-tab-2&quot; href=&quot;https://realpython.com/atom.xml#linux-macos-2&quot;&gt;&lt;i class=&quot;fa fa-linux text-muted mr-1&quot;&gt;&lt;/i&gt;&lt;i class=&quot;fa fa-apple text-muted mr-1&quot;&gt;&lt;/i&gt;Linux + macOS&lt;/a&gt;
+  &lt;/li&gt;
+
+&lt;/ul&gt;
+&lt;div class=&quot;tab-content mt-2 mb-0 js-platform-widget-content&quot;&gt;
+&lt;div class=&quot;tab-pane fade show active&quot; id=&quot;windows-2&quot;&gt;
+&lt;div class=&quot;highlight pscon&quot;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;PS&amp;gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;venv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Scripts&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;activate&lt;/span&gt;
+&lt;span class=&quot;gp gp-VirtualEnv&quot;&gt;(venv)&lt;/span&gt; &lt;span class=&quot;gp&quot;&gt;PS&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;tab-pane fade &quot; id=&quot;linux-macos-2&quot;&gt;
+&lt;div class=&quot;highlight sh&quot;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;venv/bin/activate
+&lt;span class=&quot;gp gp-VirtualEnv&quot;&gt;(venv)&lt;/span&gt; &lt;span class=&quot;gp&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;With the above commands, you create and activate a virtual environment named &lt;code&gt;venv&lt;/code&gt; by using Python’s built-in &lt;code&gt;venv&lt;/code&gt; module. The parenthetical &lt;code&gt;(venv)&lt;/code&gt; in front of the prompt indicates that you’ve successfully activated the virtual environment.&lt;/p&gt;
+&lt;p&gt;Now that you’ve created and activated a virtual environment, it’s time to install Django. You can do this using &lt;a href=&quot;https://realpython.com/what-is-pip/&quot;&gt;&lt;code&gt;pip&lt;/code&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;div class=&quot;highlight sh&quot;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp gp-VirtualEnv&quot;&gt;(venv)&lt;/span&gt; &lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;python&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;-m&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;pip&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;install&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;Django
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Once you’ve set up the virtual environment and installed Django, you can now dive into creating your Django project.&lt;/p&gt;
+&lt;h2 id=&quot;start-your-django-project&quot;&gt;Start Your Django Project&lt;a class=&quot;headerlink&quot; href=&quot;https://realpython.com/atom.xml#start-your-django-project&quot; title=&quot;Permanent link&quot;&gt;&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;A Django web application is made up of a &lt;strong&gt;project&lt;/strong&gt; and &lt;strong&gt;apps&lt;/strong&gt;. A Django project holds some configurations that apply to the web application as a whole, such as project settings, URLs, shared templates, and static files. Each Django app can have its own URLs as well as its own HTML templates and static files, such as &lt;a href=&quot;https://realpython.com/python-vs-javascript/&quot;&gt;JavaScript&lt;/a&gt; and &lt;a href=&quot;https://realpython.com/html-css-python/#style-your-content-with-css&quot;&gt;CSS&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To create your Django project, make sure you’re in the &lt;code&gt;django-blog/&lt;/code&gt; directory with your virtual environment activated. Then, run the following command to create the &lt;code&gt;personal_blog&lt;/code&gt; project:&lt;/p&gt;
+&lt;div class=&quot;highlight sh&quot;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&quot;gp gp-VirtualEnv&quot;&gt;(venv)&lt;/span&gt; &lt;span class=&quot;gp&quot;&gt;$ &lt;/span&gt;django-admin&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;startproject&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;personal_blog&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Don’t forget to add the dot (&lt;code&gt;.&lt;/code&gt;) at the end of the command above. The dot prevents Django from creating a nested project directory for your portfolio project. Otherwise you’d end up with a &lt;code&gt;personal_blog/&lt;/code&gt; folder that contains a &lt;code&gt;personal_blog/&lt;/code&gt; subdirectory.&lt;/p&gt;
+&lt;p&gt;By running the &lt;code&gt;startproject&lt;/code&gt; command as shown above, you’ve told Django to create one &lt;code&gt;personal_blog/&lt;/code&gt; folder in the &lt;code&gt;django-blog/&lt;/code&gt; directory. Your directory structure should look something like this:&lt;/p&gt;
+&lt;/div&gt;&lt;h2&gt;&lt;a href=&quot;https://realpython.com/build-a-blog-from-scratch-django/?utm_source=realpython&amp;utm_medium=rss&quot;&gt;Read the full article at https://realpython.com/build-a-blog-from-scratch-django/ »&lt;/a&gt;&lt;/h2&gt;
+        &lt;hr /&gt;
+        &lt;p&gt;&lt;em&gt;[ Improve Your Python With 🐍 Python Tricks 💌 – Get a short &amp;amp; sweet Python Trick delivered to your inbox every couple of days. &lt;a href=&quot;https://realpython.com/python-tricks/?utm_source=realpython&amp;utm_medium=rss&amp;utm_campaign=footer&quot;&gt;&amp;gt;&amp;gt; Click here to learn more and see examples&lt;/a&gt; ]&lt;/em&gt;&lt;/p&gt;</description>
+	<pubDate>Mon, 16 Oct 2023 14:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>Talk Python to Me: #433: Litestar: Effortlessly Build Performant APIs</title>
+	<guid>https://talkpython.fm/episodes/show/433/litestar-effortlessly-build-performant-apis</guid>
+	<link>https://talkpython.fm/episodes/show/433/litestar-effortlessly-build-performant-apis</link>
+	<description>We all know about Flask and Django. And of course FastAPI made a huge splash when it came on the scene a few years ago. But new web frameworks are being creating all the time. And they have these earlier frameworks to borrow from as well. On this episode we dive into a new framework gaining a lot of traction called Litestar. Will it be the foundation of your next project? Join me as I get to know Litestar with its maintainers: Jacob Coffee, Janek Nouvertné, and Cody Fincher.&amp;lt;br/&amp;gt;
+&amp;lt;br/&amp;gt;
+&amp;lt;strong&amp;gt;Links from the show&amp;lt;/strong&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;br/&amp;gt;
+&amp;lt;div&amp;gt;&amp;lt;b&amp;gt;Guests&amp;lt;/b&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Jacob Coffee&amp;lt;/b&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Jacob on Github&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://github.com/JacobCoffee/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;github.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Jacob on Twitter&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://twitter.com/_scriptr&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;@_scriptr&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Jacob on Mastodon&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://fosstodon.org/@Monorepo&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;@Monorepo&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Cody Fincher&amp;lt;/b&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Cody on LinkedIn&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://www.linkedin.com/in/cody-fincher-89179a19&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;linkedin.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Cody on GitHub&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://github.com/cofin/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;github.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Email&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;mailto://cody.fincher@gmail.com&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;cody.fincher@gmail.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Janek Nouvertné&amp;lt;/b&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Janek on GitHub&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://github.com/provinzkraut/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;github.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Email&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;mailto://j.a.nouvertne@posteo.de&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;j.a.nouvertne@posteo.de&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Litestar&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://litestar.dev/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;litestar.dev&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Litestar Documentation&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://docs.litestar.dev/2/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;litestar.dev&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Litestar on Twitter&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://twitter.com/LitestarAPI/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;@LitestarAPI&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Litestar on Mastodon&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://fosstodon.org/@litestar&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;@litestar&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Litestar Blog&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://blog.litestar.dev/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;blog.litestar.dev&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Discord&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://discord.gg/MmcwxztmQb&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;discord.gg&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Reddit r/Litestar&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://www.reddit.com/r/litestar&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;eddit.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Litestar on PyPI&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://pypi.org/project/litestar/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;pypi.org&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Benchmarks&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://docs.litestar.dev/2/benchmarks.html&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;docs.litestar.dev&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;v2.0 Release&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://github.com/litestar-org/litestar/releases/tag/v2.0.0&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;github.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;gunicorn&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://gunicorn.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;gunicorn.org&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;msgspec&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://github.com/jcrist/msgspec/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;github.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;httpx-sse&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://github.com/florimondmanca/httpx-sse&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;github.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;duckdb&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://duckdb.org&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;duckdb.org&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;rich-click&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://github.com/ewels/rich-click&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;github.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;blacksheep server&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://www.neoteroi.dev/blacksheep/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;neoteroi.dev&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Watch this episode on YouTube&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://www.youtube.com/watch?v=8gnB4ToIkQg&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;youtube.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Episode transcripts&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://talkpython.fm/episodes/transcript/433/litestar-effortlessly-build-performant-apis&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;talkpython.fm&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;--- Stay in touch with us ---&amp;lt;/b&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Subscribe to us on YouTube&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://talkpython.fm/youtube&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;youtube.com&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Follow Talk Python on Mastodon&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://fosstodon.org/web/@talkpython&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;&amp;lt;i class=&quot;fa-brands fa-mastodon&quot;&amp;gt;&amp;lt;/i&amp;gt;talkpython&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;b&amp;gt;Follow Michael on Mastodon&amp;lt;/b&amp;gt;: &amp;lt;a href=&quot;https://fosstodon.org/web/@mkennedy&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&amp;gt;&amp;lt;i class=&quot;fa-brands fa-mastodon&quot;&amp;gt;&amp;lt;/i&amp;gt;mkennedy&amp;lt;/a&amp;gt;&amp;lt;br/&amp;gt;&amp;lt;/div&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;strong&amp;gt;Sponsors&amp;lt;/strong&amp;gt;&amp;lt;br/&amp;gt;
+&amp;lt;a href='https://talkpython.fm/sentry'&amp;gt;Sentry Error Monitoring, Code TALKPYTHON&amp;lt;/a&amp;gt;&amp;lt;br&amp;gt;
+&amp;lt;a href='https://talkpython.fm/training'&amp;gt;Talk Python Training&amp;lt;/a&amp;gt;</description>
+	<pubDate>Sun, 15 Oct 2023 08:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>Django Weblog: Announcing DjangoCon Europe 2024 in Vigo, Spain!</title>
+	<guid>https://www.djangoproject.com/weblog/2023/oct/14/djangocon-europe-2024/</guid>
+	<link>https://www.djangoproject.com/weblog/2023/oct/14/djangocon-europe-2024/</link>
+	<description>&lt;p&gt;We're thrilled to announce the much-anticipated return of DjangoCon Europe, set to take place in the vibrant city of Vigo, Spain, in 2024!&lt;/p&gt;
+&lt;p&gt;DjangoCon Europe has been a cornerstone of the Django community, bringing together developers and enthusiasts from all over Europe and beyond to celebrate and advance the Django web framework.&lt;/p&gt;
+&lt;div class=&quot;section&quot; id=&quot;s-save-the-dates&quot;&gt;
+&lt;h3&gt;Save the Dates&lt;/h3&gt;
+&lt;p&gt;Mark your calendars for DjangoCon Europe 2024, which will be held from &lt;strong&gt;June 5th to 9th&lt;/strong&gt;. The conference will host a balanced mix of insightful talks, hands-on workshops, and ample opportunities for networking and socializing with fellow Django enthusiasts.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;section&quot; id=&quot;s-explore-vigo&quot;&gt;
+&lt;h3&gt;Explore Vigo&lt;/h3&gt;
+&lt;p&gt;Nestled on the stunning Galician coastline, Vigo is a city with a rich cultural heritage, breathtaking landscapes, and a burgeoning tech scene. Known for its fresh seafood, historical sites, and lively atmosphere, Vigo is the perfect backdrop for DjangoCon Europe 2024. Whether you're a seasoned Django developer or just starting your journey with web development, Vigo's unique charm and welcoming community will make your conference experience even more memorable.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;section&quot; id=&quot;s-call-for-proposals&quot;&gt;
+&lt;h3&gt;Call for Proposals&lt;/h3&gt;
+&lt;p&gt;DjangoCon Europe wouldn't be the same without the insightful and diverse talks contributed by our community. We encourage you to consider submitting a proposal to share your knowledge, experiences, and insights with the Django community. Keep an eye out for the Call for Proposals (CFP) announcement. This is your chance to contribute to the conference program and help make DjangoCon Europe 2024 exceptional.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;section&quot; id=&quot;s-get-involved&quot;&gt;
+&lt;h3&gt;Get Involved&lt;/h3&gt;
+&lt;p&gt;DjangoCon Europe is a community-driven event, and we rely on the active participation and support of our community members. Here are a few ways you can get involved:&lt;/p&gt;
+&lt;ul class=&quot;simple&quot;&gt;
+&lt;li&gt;Attend: Join us in Vigo for a week of learning, networking, and fun.&lt;/li&gt;
+&lt;li&gt;Speak: Share your expertise by submitting a talk proposal when the CFP opens.&lt;/li&gt;
+&lt;li&gt;Sponsor: Support the conference financially and gain visibility in the Django community (email us at &lt;a class=&quot;reference external&quot; href=&quot;mailto:sponsors@djangocon.eu&quot;&gt;sponsors&amp;#64;djangocon.eu&lt;/a&gt;)&lt;/li&gt;
+&lt;li&gt;Volunteer: Help us make the conference run smoothly by volunteering your time and skills (&lt;a class=&quot;reference external&quot; href=&quot;https://forms.gle/DJvG59m5b6bqNQmJ9&quot;&gt;https://forms.gle/DJvG59m5b6bqNQmJ9&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Stay tuned for updates on registration, sponsorship opportunities, and more by following DjangoCon Europe on &lt;a class=&quot;reference external&quot; href=&quot;https://twitter.com/djangoconeurope&quot;&gt;Twitter&lt;/a&gt; and &lt;a class=&quot;reference external&quot; href=&quot;https://www.linkedin.com/company/djangocon-europe/&quot;&gt;LinkedIn&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;section&quot; id=&quot;s-stay-informed&quot;&gt;
+&lt;h3&gt;Stay Informed&lt;/h3&gt;
+&lt;p&gt;To stay up-to-date with the latest DjangoCon Europe 2024 news, visit our &lt;a class=&quot;reference external&quot; href=&quot;https://2024.djangocon.eu/&quot;&gt;website&lt;/a&gt; and follow us on &lt;a class=&quot;reference external&quot; href=&quot;https://twitter.com/djangoconeurope&quot;&gt;Twitter&lt;/a&gt; &amp;amp; &lt;a class=&quot;reference external&quot; href=&quot;https://www.linkedin.com/company/djangocon-europe/&quot;&gt;LinkedIn&lt;/a&gt;. We will be sharing details about the schedule, speakers, and more in the coming months, so make sure you're on the list!&lt;/p&gt;
+&lt;p&gt;We can't wait to see you in Vigo, Spain, for DjangoCon Europe 2024. Get ready for a week of learning, networking, and celebrating all things Django. It's going to be an unforgettable event, and we look forward to sharing this experience with you. Thank you for being a part of our amazing Django community!&lt;/p&gt;
+&lt;p&gt;Stay tuned for more updates, and we'll see you in Vigo!&lt;/p&gt;
+&lt;p&gt;The DjangoCon Europe 2024 Organizing Team&lt;/p&gt;
+&lt;/div&gt;</description>
+	<pubDate>Sat, 14 Oct 2023 14:19:25 +0000</pubDate>
+</item>
+<item>
+	<title>PyCharm: PyCharm 2023.2.3 Is Out!</title>
+	<guid>https://blog.jetbrains.com/pycharm/2023/10/2023-2-3/</guid>
+	<link>https://blog.jetbrains.com/pycharm/2023/10/2023-2-3/</link>
+	<description>&lt;p&gt;You can update to this version from inside the IDE, using the&amp;nbsp;&lt;a href=&quot;https://www.jetbrains.com/toolbox-app/&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;Toolbox App&lt;/a&gt;, or using snaps if you are an Ubuntu user. You can also download it from our&amp;nbsp;&lt;a href=&quot;https://www.jetbrains.com/pycharm/download/&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;website&lt;/a&gt;.&lt;/p&gt;
+
+
+
+&lt;p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a class=&quot;jb-download-button&quot; href=&quot;https://www.jetbrains.com/pycharm/download/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Download PyCharm 2023.2.3&lt;/a&gt;&lt;/p&gt;&lt;/p&gt;
+
+
+
+&lt;h3 class=&quot;wp-block-heading&quot; id=&quot;pep-701-formalization-of-f-strings&quot;&gt;PEP 701: Formalization of f-strings&lt;/h3&gt;
+
+
+
+&lt;p&gt;To address this change, PyCharm will adjust its inspections to allow reusing quotes, line breaks, escape sequences, and comments inside f-strings for Python 3.12. Additionally, existing intention actions for string literals, such as converting between various quote types, now work in accordance with the new syntax.&lt;/p&gt;
+
+
+
+&lt;p&gt;Below are the most notable fixes in the new version:&amp;nbsp;&lt;/p&gt;
+
+
+
+&lt;ul&gt;
+&lt;li&gt;The IDE now displays only one Kubernetes context by default, and contexts can be added and removed as needed. This prevents the IDE from freezing due to unnecessary refreshing of all contexts from kubeconfig files. [&lt;a href=&quot;https://youtrack.jetbrains.com/issue/IDEA-327422/Idea-tries-to-load-and-refresh-the-context-for-all-Kubernetes-contexts-it-sees-in-kubeconfig&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;IDEA-327422&lt;/a&gt;]&lt;/li&gt;
+
+
+
+&lt;li&gt;The&amp;nbsp;&lt;em&gt;Access is allowed from Event Dispatch Thread (EDT) only&lt;/em&gt;&amp;nbsp;error no longer causes the IDE to malfunction when opening certain files. [&lt;a href=&quot;https://youtrack.jetbrains.com/issue/IDEA-327168&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;IDEA-327168&lt;/a&gt;]&lt;/li&gt;
+
+
+
+&lt;li&gt;Code reformatting works as expected in LightEdit mode. [&lt;a href=&quot;https://youtrack.jetbrains.com/issue/IDEA-315522/Unable-to-reformat-file-in-Light-Edit-mode&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;IDEA-315522&lt;/a&gt;]&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;p&gt;To find out more information about the issues resolved, please refer to the&amp;nbsp;&lt;a href=&quot;https://youtrack.jetbrains.com/articles/PY-A-233538138/PyCharm-2023.2.3-232.10072.31-build-Release-Notes&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;release notes&lt;/a&gt;.&lt;/p&gt;
+
+
+
+&lt;p&gt;If you encounter any bugs or have suggestions on how to further improve the IDE, please submit your feedback in the comments below, on &lt;a href=&quot;https://twitter.com/pycharm&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;X (formerly Twitter)&lt;/a&gt;, or by using our &lt;a href=&quot;https://youtrack.jetbrains.com/issues/PY&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;issue tracker&lt;/a&gt;.&lt;/p&gt;</description>
+	<pubDate>Sat, 14 Oct 2023 07:14:20 +0000</pubDate>
+</item>
+<item>
+	<title>Django Weblog: 2024 DSF Board Nominations</title>
+	<guid>https://www.djangoproject.com/weblog/2023/oct/13/2024-dsf-board-nominations/</guid>
+	<link>https://www.djangoproject.com/weblog/2023/oct/13/2024-dsf-board-nominations/</link>
+	<description>&lt;p&gt;Nominations are open for the 2024 Django Software Foundation Board of Directors.&lt;/p&gt;
+&lt;p&gt;In 2023 we introduced a staggered term for directors, which means at this time there are three positions currently open, with each position serving for two years.&lt;/p&gt;
+&lt;p&gt;Decisions around the 2024 officer roles will be made during the meeting of the new board. As such, you don't need to specify which position you are nominating for, and this field has been removed from the form.&lt;/p&gt;
+&lt;p&gt;As you know, the Board guides the direction of the marketing, governance and outreach activities of the Django community. We provide funding, resources, and guidance to Django events on a global level. Further we provide support to the Django community with an established Code of Conduct and make decisions and enforcement recommendations for violations. We work closely with our corporate and individual members to raise funds to help support our great community.&lt;/p&gt;
+&lt;p&gt;In order for our community to continue to grow and advance the Django Web framework, we need your help. The Board of Directors consists of volunteers who are elected to one year terms. This is an excellent opportunity to help advance Django. We can’t do it without volunteers, such as yourself. Anyone including current Board members, DSF Members, or the public at large can apply to the Board. It is open to all.&lt;/p&gt;
+&lt;p&gt;If you are interested in helping to support the development of Django we’d enjoy receiving your application for the Board of Directors. Please fill out the application form by November 8, 2023 AoE to be considered. If it is still November 8, 2023 somewhere in the world, applications will remain open. This date has been extended to allow for overlap with both DjangoCon US and DjangoCon Africa.&lt;/p&gt;
+&lt;p&gt;If you have any questions about applying, the work, or the process in general please don’t hesitate to reach out via email to &lt;a class=&quot;reference external&quot; href=&quot;mailto:foundation@djangoproject.com&quot;&gt;foundation&amp;#64;djangoproject.com&lt;/a&gt; and one of us will get back with you shortly.&lt;/p&gt;
+&lt;p&gt;Thank you for your time and we look forward to working with you in 2024.&lt;/p&gt;
+&lt;p&gt;The 2023 DSF Board of Directors.&lt;/p&gt;
+&lt;p&gt;&lt;a class=&quot;reference external&quot; href=&quot;https://docs.google.com/forms/d/e/1FAIpQLSdjlbZ3Bifs7Rk3xsmoJd191HVadv0WkBFD4s-bVNiar8Naow/viewform&quot;&gt;2024 DSF Board Nomination Form&lt;/a&gt;&lt;/p&gt;</description>
+	<pubDate>Sat, 14 Oct 2023 03:51:41 +0000</pubDate>
+</item>
+<item>
+	<title>Armin Ronacher: EuroRust 2023 Reflections: What's a Conference For?</title>
+	<guid>http://lucumr.pocoo.org/2023/10/14/eurorust-whats-a-conference</guid>
+	<link>http://lucumr.pocoo.org/2023/10/14/eurorust-whats-a-conference</link>
+	<description>&lt;p&gt;I very rarely write recaps of conferences but this time around I could not
+resist.  This is for a lot of reasons. To kick things off, quite a bit of
+what was on my mind relates quite directly to a perception of a general
+negativity in the Rust community that I share.  Most specifically &lt;a class=&quot;reference external&quot; href=&quot;https://blog.adamchalmers.com/rustconf-2023-recap/&quot;&gt;this quote
+by Adam Chalmer&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+Rustconf definitely felt sadder and downbeat than my previous visit. […]
+I felt like this year's conference was &lt;em&gt;defensive&lt;/em&gt; and maybe somewhat
+&lt;em&gt;depressed&lt;/em&gt;. I wanted to give the spirit of Rust a hug and tell it,
+&amp;quot;hey, I know you've had a tough year&amp;quot;.&lt;/blockquote&gt;
+&lt;p&gt;Not only did this get me thinking, I also &lt;a class=&quot;reference external&quot; href=&quot;https://twitter.com/mitsuhiko/status/1663559716180758537&quot;&gt;had a lot of reflection to do&lt;/a&gt; about myself
+and Rust this year.  In case you are not familar, I posted a regretful
+tweet in response to the &lt;a class=&quot;reference external&quot; href=&quot;https://fasterthanli.me/articles/the-rustconf-keynote-fiasco-explained&quot;&gt;keynote fiasco&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Those reflections let me come to the conclusion for myself that
+the following three things would be good for us as a Rust community:&lt;/p&gt;
+&lt;ul class=&quot;simple&quot;&gt;
+&lt;li&gt;Rust conferences need more purposefulness&lt;/li&gt;
+&lt;li&gt;Online discourse is toxic and we need to meet in person&lt;/li&gt;
+&lt;li&gt;The Rust Project needs an All-Hands&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Let me elaborate.&lt;/p&gt;
+&lt;div class=&quot;section&quot; id=&quot;rust-conferences-and-purposefulness&quot;&gt;
+&lt;h2&gt;Rust Conferences and Purposefulness&lt;/h2&gt;
+&lt;p&gt;I have several critiques of Python, but I must admit that the Python
+community has excelled in certain areas over the years, and one of those
+is their conferences.  How good Python conferences are is often only
+apparent once you go to other events that don't quite meet the same standards.&lt;/p&gt;
+&lt;p&gt;One aspect where Python shines, and which I believe is somewhat lacking in
+the Rust conference landscape, is the clarity and purpose.  When you
+attend a PyCon, you can anticipate a particular style of conference, and
+if you happen to attend &lt;em&gt;the PyCon&lt;/em&gt;, you're guaranteed a well-defined and
+cohesive conference experience.  You know what the PyCon conference is and
+what you get to expect.&lt;/p&gt;
+&lt;p&gt;Rust has a few conferences these days but it's not clear who the target
+audience of that conference is.  Here is my current interpretation of what
+the conferences are for:&lt;/p&gt;
+&lt;ul class=&quot;simple&quot;&gt;
+&lt;li&gt;RustConf: It's the Rust conference of the Rust project where we get to
+hear the thoughts of the Rust project and nerdy things.&lt;/li&gt;
+&lt;li&gt;Rust Nation: a classic conference for users of Rust.&lt;/li&gt;
+&lt;li&gt;EuroRust: a blend of RustConf and Rust Nation maybe?&lt;/li&gt;
+&lt;li&gt;RustFest: a former travelling conference for Rust users?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I confess that I'm uncertain if my interpretation is entirely accurate.
+From both the perspective of a potential speaker and an attendee, the lack
+of clarity about the purpose of these conferences leaves me hesitant.
+This also comes up when pitching or preparing a talk.  At EuroRust this
+lack of clarity was at least in parts apparent by the somewhat random
+collection of talk topics.&lt;/p&gt;
+&lt;p&gt;In my personal opinion, I believe Rust should consider two distinct styles
+of conferences: one that deliberately fosters connections between language
+developers and the core community, and another aimed at language users.
+These two conference styles would quite likely feature different types of
+content and cater to different audiences.&lt;/p&gt;
+&lt;p&gt;I initially perceived RustConf as a platform for major language
+announcements, much like Apple's WWDC just for the Rust project.  However,
+I've come to understand that this perception is somewhat subjective and
+not universally shared.  It's essential to establish a clear identity for
+the conference and communicate its purpose effectively.&lt;/p&gt;
+&lt;p&gt;Personally, I contemplated attending RustConf this year, but the
+conference's location in Albuquerque (which is really inconvenient for me
+to go to) and the lack of a clear conference identity made it less
+appealing to me.&lt;/p&gt;
+&lt;p&gt;My fondest memories of Python conferences are the sprints, are the
+“Birds of a Feather” sessions, the hallway track, connecting to people
+eye-to-eye.  The latter being particularly important.  &lt;a class=&quot;reference external&quot; href=&quot;https://lukasz.langa.pl/&quot;&gt;Łukasz Langa&lt;/a&gt; described me this year as “more nuanced in
+person [than online]”.  I believe this to be true to all of us.  I don't
+even remeber having a bad experience with someone in person, even if I had
+massive disagreements on Twitter or an issue tracker.&lt;/p&gt;
+&lt;p&gt;I think it should be the task of a conference to enable this.  EuroRust
+2023 could have done better in enabling attendees to network and connect
+with each other.  Here are some of my thoughts for a better hallway track
+experience:&lt;/p&gt;
+&lt;ul class=&quot;simple&quot;&gt;
+&lt;li&gt;&lt;strong&gt;Double sided badges:&lt;/strong&gt; the badges were single-sided, and the lanyards
+made it easy for tags to flip over. It was incredibly hard to read,
+especially for people like myself who have a hard time matching faces in
+real life to online identities.  This is also feedback I heard from
+others. So, next time around, make sure they are always visible.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Badge addons:&lt;/strong&gt; just seeing the badge is not enough because it's
+really hard to spot people.  PyCon has these awesome extra stickers that
+you can hang underneath your badge to augment it.  The basics are
+somewhat obvious (no pictures, what are my pronouns) but the really
+useful ones are great conversation starters.  Am I a maintainer?  Am I a
+core dev?  Am I a sponsor?  Am I a speaker?&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Better hallway layout:&lt;/strong&gt; The layout of the conference venue, in addition
+to the badge-related challenges, significantly hindered the ease of
+spotting and engaging with fellow attendees.  The absence of clearly
+designated spaces for mingling and initiating conversations was really
+making things difficult.  I've noted how other conferences have successfully
+implemented specific areas, such as topic tables, to bring together people
+with various interests.  Even a spacious, open area like the one at the
+Berlin conference last year provided a more effective setup for fostering
+connections and discussions. Consider reevaluating the layout to
+encourage more meaningful interactions among attendees.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&quot;section&quot; id=&quot;toxic-discourse&quot;&gt;
+&lt;h2&gt;Toxic Discourse&lt;/h2&gt;
+&lt;p&gt;I had a great experience at the conference.  I had good conversations,
+meaningful discussions, and did not feel any animosity.  Among the people I
+talked to, there was a widely shared recognition that the sentiment and vibe
+in the community is unnecessarily bleak.  This is not something we can fix
+overnight. Much of this negativity comes from Twitter, Mastodon, issue
+trackers, and other online environments.  We can be quick to write a
+hurtful or snarky remark that lend themselves to misinterpretation.&lt;/p&gt;
+&lt;p&gt;Growing communities make mistakes, many of us have made missteps.  In many
+of those cases however that is out of our failings and not bad intentions.
+As mentioned earlier hallways tracks are a great way to meet people.  They
+are also an amazing way to find out that people are much nicer in real
+world than their Twitter profile might make you believe.&lt;/p&gt;
+&lt;p&gt;We also in some ways are victims of our own success.  We are too large of
+a community to be able to come to a consensus on everything.  But we can
+respect each other, in particular when we are of different opinions.&lt;/p&gt;
+&lt;p&gt;This leads me to the most important aspect:&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;section&quot; id=&quot;the-rust-project-needs-an-all-hands&quot;&gt;
+&lt;h2&gt;The Rust Project Needs an All-Hands&lt;/h2&gt;
+&lt;p&gt;EuroRust's partial failure is the shared failure of RustConf.  The people
+that go to those conferences are geographically split, and some of the
+folks that did the most for the Rust project are not going at all.  This
+is not good.&lt;/p&gt;
+&lt;p&gt;The combination of the “graduation” of Rust out of Mozilla, the pandemic
+and just a lot of churn in the Rust project has left a void.  I wish that
+a goal of the Rust Foundation would be to help finance regular get-togethers
+of the core Rust project (and maybe former influential members), key players
+in the community.  The best solutions for problems are found when a group
+of people meet in person with a goal and desire to hash things out.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&quot;section&quot; id=&quot;things-are-okay&quot;&gt;
+&lt;h2&gt;Things are Okay&lt;/h2&gt;
+&lt;p&gt;Rust has never been so successful and it never has been as enjoyable as
+today.  It's a great language, there are amazing people in the community.
+More and more people are using the project and many communities are
+looking up to the developer experience that we enjoy.&lt;/p&gt;
+&lt;p&gt;The conference was great, I had a good time.  It's a really good starting
+point for even better conferences going forward.&lt;/p&gt;
+&lt;/div&gt;</description>
+	<pubDate>Sat, 14 Oct 2023 00:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>Django Weblog: Announcing DSF Working Groups</title>
+	<guid>https://www.djangoproject.com/weblog/2023/oct/13/announcing-dsf-working-groups/</guid>
+	<link>https://www.djangoproject.com/weblog/2023/oct/13/announcing-dsf-working-groups/</link>
+	<description>&lt;p&gt;Today we’re announcing some changes to how the DSF gets work done. We
+want to make it easier for people to contribute meaningfully to the
+DSF’s mission. Previously, you more or less needed to be a board member
+to help; now, anyone can join — or form — a working group to further the
+DSF’s mission.&lt;/p&gt;
+&lt;p&gt;Our intent is, over time, to move the majority of the day-to-day
+business of the DSF from the Board down to individual working groups.
+This’ll accomplish two things: it’ll make it much easier for folks to
+get involved and help the DSF, and it’ll reduce the current bottleneck
+where the Board needs to be involved in every decision.&lt;/p&gt;
+&lt;p&gt;We're tracking all the details — current working groups, info on how to
+form new ones — &lt;a class=&quot;reference external&quot; href=&quot;https://github.com/django/dsf-working-groups&quot;&gt;in this Github repository&lt;/a&gt;. We currently have the following working groups:&lt;/p&gt;
+&lt;ul class=&quot;simple&quot;&gt;
+&lt;li&gt;&lt;a class=&quot;reference external&quot; href=&quot;https://github.com/django/dsf-working-groups/blob/main/active/code-of-conduct.md&quot;&gt;Code of Conduct&lt;/a&gt;: handles reports of violations of Django’s Code of Conduct.&lt;/li&gt;
+&lt;li&gt;&lt;a class=&quot;reference external&quot; href=&quot;https://github.com/django/dsf-working-groups/blob/main/active/dceu.md&quot;&gt;DjangoCon Europe Support&lt;/a&gt;: supports the DC.EU organizers.&lt;/li&gt;
+&lt;li&gt;&lt;a class=&quot;reference external&quot; href=&quot;https://github.com/django/dsf-working-groups/blob/main/active/fellowship.md&quot;&gt;Fellowship&lt;/a&gt;: manages the operation of the Django Fellowship program.&lt;/li&gt;
+&lt;li&gt;&lt;a class=&quot;reference external&quot; href=&quot;https://github.com/django/dsf-working-groups/blob/main/active/fundraising.md&quot;&gt;Fundraising&lt;/a&gt;: coordinates fundraising efforts, particularly around corporate and major donations.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Most of these groups are currently seeking volunteers! See each group’s
+charter doc linked above for instructions on how to volunteer.&lt;/p&gt;
+&lt;p&gt;Our next steps are going to be spinning up some new working groups under
+this structure. We’re planning on three new working groups:&lt;/p&gt;
+&lt;ul class=&quot;simple&quot;&gt;
+&lt;li&gt;Event Grants, that’ll oversee our &lt;a class=&quot;reference external&quot; href=&quot;https://www.djangoproject.com/foundation/conferences/&quot;&gt;financial support for events&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Social Media, a working group to step up our presence on social media (including this blog).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If you’d want to join any of these soon-to-be-created groups, &lt;a class=&quot;reference external&quot; href=&quot;https://www.djangoproject.com/contact/foundation/&quot;&gt;contact the
+board&lt;/a&gt; and express your interest.&lt;/p&gt;
+&lt;p&gt;And if you’ve got ideas for Working Groups not mentioned above, you should
+propose your own! The best first step there would be to &lt;a class=&quot;reference external&quot; href=&quot;https://www.djangoproject.com/contact/foundation/&quot;&gt;contact the board&lt;/a&gt; to
+get the conversation started.&lt;/p&gt;</description>
+	<pubDate>Fri, 13 Oct 2023 14:10:45 +0000</pubDate>
+</item>
+<item>
+	<title>Real Python: The Real Python Podcast – Episode #176: Building Python Best Practices and Fundamental Skills</title>
+	<guid>https://realpython.com/podcasts/rpp/176/</guid>
+	<link>https://realpython.com/podcasts/rpp/176/</link>
+	<description>&lt;p&gt;What fundamental developer skills are new Python users missing? What best practices might developers without a computer science background be lacking? Christopher Trudeau is back on the show this week, bringing another batch of PyCoder's Weekly articles and projects.&lt;/p&gt;
+        &lt;hr /&gt;
+        &lt;p&gt;&lt;em&gt;[ Improve Your Python With 🐍 Python Tricks 💌 – Get a short &amp;amp; sweet Python Trick delivered to your inbox every couple of days. &lt;a href=&quot;https://realpython.com/python-tricks/?utm_source=realpython&amp;utm_medium=rss&amp;utm_campaign=footer&quot;&gt;&amp;gt;&amp;gt; Click here to learn more and see examples&lt;/a&gt; ]&lt;/em&gt;&lt;/p&gt;</description>
+	<pubDate>Fri, 13 Oct 2023 12:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>Python Insider: Python 3.13.0 alpha 1 is now available</title>
+	<guid>https://pythoninsider.blogspot.com/2023/10/python-3130-alpha-1-is-now-available.html</guid>
+	<link>https://pythoninsider.blogspot.com/2023/10/python-3130-alpha-1-is-now-available.html</link>
+	<description>&lt;p&gt;&amp;nbsp;&lt;/p&gt;&lt;p&gt;It’s not a very exciting release (yet), but it’s time for the first alpha of Python 3.13 anyway!&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;https://www.python.org/downloads/release/python-3130a1/&quot;&gt;https://www.python.org/downloads/release/python-3130a1/&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;This is an early developer preview of Python 3.13&lt;/strong&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;a class=&quot;anchor&quot; href=&quot;https://discuss.python.org/t/python-3-13-0-alpha-1/36109#major-new-features-of-the-313-series-compared-to-312-1&quot; name=&quot;major-new-features-of-the-313-series-compared-to-312-1&quot;&gt;&lt;/a&gt;&amp;nbsp;&lt;/h1&gt;&lt;h1&gt;Major new features of the 3.13 series, compared to 3.12&lt;/h1&gt;
+&lt;p&gt;Python 3.13 is still in development.  This release, 3.13.0a1 is the first of seven planned alpha releases.&lt;/p&gt;
+&lt;p&gt;Alpha releases are intended to make it easier to test the current 
+state of new features and bug fixes and to test the release process.&lt;/p&gt;
+&lt;p&gt;During the alpha phase, features may be added up until the start of 
+the beta phase (2024-05-07) and, if necessary, may be modified or 
+deleted up until the release candidate phase (2024-07-30).  Please keep 
+in mind that this is a preview release and its use is &lt;strong&gt;not&lt;/strong&gt; recommended for production environments.&lt;/p&gt;
+&lt;p&gt;Many new features for Python 3.13 are still being planned and written.  The most notable change so far are &lt;a href=&quot;https://docs.python.org/dev/whatsnew/3.13.html#deprecated&quot;&gt;new deprecations&lt;/a&gt;, most of which are scheduled for removal from Python 3.15 or 3.16&lt;/p&gt;
+&lt;p&gt;&lt;small&gt;(Hey, &lt;strong&gt;fellow core developer,&lt;/strong&gt; if a feature you find important is missing from this list, &lt;a href=&quot;mailto:thomas@python.org&quot;&gt;let Thomas know&lt;/a&gt;.)&lt;/small&gt;&lt;/p&gt;
+&lt;p&gt;The next pre-release of Python 3.13 will be 3.13.0a2, currently scheduled for  2023-11-21.&lt;/p&gt;
+&lt;h1&gt;&lt;a class=&quot;anchor&quot; href=&quot;https://discuss.python.org/t/python-3-13-0-alpha-1/36109#more-resources-2&quot; name=&quot;more-resources-2&quot;&gt;&lt;/a&gt;&amp;nbsp;&lt;/h1&gt;&lt;h1&gt;More resources&lt;/h1&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;https://docs.python.org/3.13/&quot;&gt;Online Documentation&lt;/a&gt;&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;https://www.python.org/dev/peps/pep-0719/&quot;&gt;PEP 719&lt;/a&gt;, 3.13 Release Schedule&lt;/li&gt;&lt;li&gt;Report bugs at &lt;a href=&quot;https://github.com/python/cpython/issues&quot;&gt;https://github.com/python/cpython/issues&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;&lt;a href=&quot;https://discuss.python.org/psf/donations/&quot;&gt;Help fund Python and its community&lt;/a&gt;. &lt;br /&gt;&lt;/li&gt;&lt;/ul&gt;
+&lt;h1&gt;&lt;a class=&quot;anchor&quot; href=&quot;https://discuss.python.org/t/python-3-13-0-alpha-1/36109#enjoy-the-new-releases-3&quot; name=&quot;enjoy-the-new-releases-3&quot;&gt;&lt;/a&gt;&amp;nbsp;&lt;/h1&gt;&lt;h1&gt;Enjoy the new releases&lt;/h1&gt;
+&lt;p&gt;Thanks to all of the many volunteers who help make Python Development
+ and these releases possible! Please consider supporting our efforts by 
+volunteering yourself or through organization contributions to the 
+Python Software Foundation.&lt;/p&gt;
+&lt;p&gt;Regards from lovely Czechia,&lt;/p&gt;
+&lt;p&gt;Your release team,&lt;br /&gt;
+Thomas Wouters &lt;br /&gt;
+Ned Deily &lt;br /&gt;
+Steve Dower &lt;br /&gt;
+Łukasz Langa&lt;/p&gt;</description>
+	<pubDate>Fri, 13 Oct 2023 08:31:36 +0000</pubDate>
+</item>
+<item>
+	<title>PyCharm: PyCharm 2023.3 EAP 3 Is Out!</title>
+	<guid>https://blog.jetbrains.com/pycharm/2023/10/2023-3-eap-3/</guid>
+	<link>https://blog.jetbrains.com/pycharm/2023/10/2023-3-eap-3/</link>
+	<description>&lt;p&gt;This build brings enhancements to the new type parameter syntax and code assistance for &lt;code&gt;REST_FRAMEWORKS&lt;/code&gt; parameters in &lt;code&gt;settings.py&lt;/code&gt;.&lt;/p&gt;
+
+
+
+&lt;p&gt;The&amp;nbsp;&lt;a href=&quot;https://www.jetbrains.com/toolbox-app/?_ga=2.115938118.1515730114.1696226429-2019060587.1692431977&amp;_gl=1*y52f8m*_ga*MjAxOTA2MDU4Ny4xNjkyNDMxOTc3*_ga_9J976DJZ68*MTY5NjQ4MjkxMy4yODguMS4xNjk2NDgzMzgxLjYwLjAuMA..&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;Toolbox App&lt;/a&gt;&amp;nbsp;is the easiest way to get the EAP builds and keep both your stable and EAP versions up to date. You can also manually download the EAP builds from our&amp;nbsp;&lt;a href=&quot;https://www.jetbrains.com/pycharm/nextversion/&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;website&lt;/a&gt;.&lt;/p&gt;
+
+
+
+&lt;img width=&quot;2560&quot; height=&quot;1440&quot; src=&quot;https://blog.jetbrains.com/wp-content/uploads/2023/09/Blog_Featured_image_1280x720_PyCharm-2x.png&quot; alt=&quot;&quot; class=&quot;wp-image-391623&quot; /&gt;
+
+
+
+&lt;p&gt;&lt;strong&gt;Important! PyCharm EAP builds are not fully tested and might be unstable.&lt;/strong&gt;&lt;/p&gt;
+
+
+
+&lt;p&gt;&lt;p align=&quot;center&quot;&gt;&lt;a class=&quot;jb-download-button&quot; href=&quot;https://www.jetbrains.com/pycharm/nextversion/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Download PyCharm 2023.3 EAP&lt;/a&gt;&lt;/p&gt;&lt;/p&gt;
+
+
+
+&lt;h3 class=&quot;wp-block-heading&quot;&gt;Enhanced code assistance for new type parameter syntax&lt;/h3&gt;
+
+
+
+&lt;p&gt;With this EAP build, PyCharm provides &lt;em&gt;Rename&lt;/em&gt; refactoring for the new style of type aliases. &lt;em&gt;Go To Declaration&lt;/em&gt; and &lt;em&gt;Find Usages&lt;/em&gt; are also supported.&lt;/p&gt;
+
+
+
+&lt;h3 class=&quot;wp-block-heading&quot;&gt;Code assistance for &lt;code&gt;REST_FRAMEWORK&lt;/code&gt; parameters in &lt;strong&gt;&lt;code&gt;settings.py&lt;/code&gt;&lt;/strong&gt;&lt;/h3&gt;
+
+
+
+&lt;p&gt;In PyCharm 2023.3, you will be able to navigate to classes by simply clicking on them in the &lt;code&gt;REST_FRAMEWORK&lt;/code&gt; variable in &lt;code&gt;&lt;strong&gt;settings.py&lt;/strong&gt;.&lt;/code&gt;&lt;/p&gt;
+
+
+
+&lt;ul&gt;
+&lt;li&gt;Enjoy autocompletion for class names and methods, enhancing productivity and reducing errors.&lt;/li&gt;
+
+
+
+&lt;li&gt;Your models will be automatically renamed in &lt;code&gt;settings.py &lt;/code&gt;when you rename them with &lt;em&gt;Rename&lt;/em&gt; refactoring in your code. If you move your model to another module, it will also be reflected in the settings.py automatically.&lt;/li&gt;
+&lt;/ul&gt;
+
+
+
+&lt;h3 class=&quot;wp-block-heading&quot;&gt;Pycodestyle 2.11&lt;/h3&gt;
+
+
+
+&lt;p&gt;This build also includes the updated version of pycodestyle (2.11), which provides support for Python 3.12.&lt;/p&gt;
+
+
+
+&lt;p&gt;These are the key updates for this week! The complete list of changes is available in the&amp;nbsp;&lt;a href=&quot;https://youtrack.jetbrains.com/articles/PY-A-233538137/PyCharm-2023.3-EAP-3-233.9802.6-build-Release-Notes&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;release notes&lt;/a&gt;.&amp;nbsp;&lt;/p&gt;
+
+
+
+&lt;p&gt;We’d like to know your thoughts on these new features. Feel free to share your feedback on&amp;nbsp;&lt;a href=&quot;https://twitter.com/pycharm&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;X (formerly Twitter)&lt;/a&gt;, or by leaving comments in the section below. If you spot any bugs, please report them via our&amp;nbsp;&lt;a href=&quot;https://youtrack.jetbrains.com/issues/PY&quot; target=&quot;_blank&quot; rel=&quot;noreferrer noopener&quot;&gt;issue tracker&lt;/a&gt;.&lt;/p&gt;</description>
+	<pubDate>Thu, 12 Oct 2023 07:10:15 +0000</pubDate>
+</item>
+<item>
+	<title>ListenData: How to Install PyTorch on Windows</title>
+	<guid>https://www.listendata.com/2023/10/how-to-install-pytorch-on-windows.html</guid>
+	<link>https://www.listendata.com/2023/10/how-to-install-pytorch-on-windows.html</link>
+	<description>&lt;p&gt;This tutorial explains the steps to install PyTorch on Windows.&lt;/p&gt;
+&lt;p&gt;&lt;b&gt;PyTorch&lt;/b&gt; is a free and open source machine learning library developed by Facebook's AI Research lab. It is built on the Torch library and is mainly used for tasks like computer vision and natural language processing (NLP).&lt;/p&gt;
+&lt;a href=&quot;https://www.listendata.com/2023/10/how-to-install-pytorch-on-windows.html#more&quot;&gt;To read this article in full, please click here&lt;/a&gt;&lt;div class=&quot;blogger-post-footer&quot;&gt;This post appeared first on &lt;a href=&quot;https://www.listendata.com/&quot;&gt;ListenData&lt;/a&gt;&lt;/div&gt;</description>
+	<pubDate>Thu, 12 Oct 2023 07:08:38 +0000</pubDate>
+</item>
+<item>
+	<title>Matt Layman: Practical AI: HuggingFace Transformers and Diffusers for Beginners</title>
+	<guid>https://www.mattlayman.com/blog/2023/practical-ai-huggingface-transformers-and-diffusers-for-beginners/</guid>
+	<link>https://www.mattlayman.com/blog/2023/practical-ai-huggingface-transformers-and-diffusers-for-beginners/</link>
+	<description>This presentation provides a straightforward overview of the HuggingFace Transformers and Diffusers libraries. Aimed at those without a deep understanding of AI or ML, we’ll focus on practical, hands-on applications. We conclude by setting up a Flask app that generates AI images, demonstrating how these tools can be used to create useful applications.</description>
+	<pubDate>Thu, 12 Oct 2023 00:00:00 +0000</pubDate>
+</item>
+<item>
+	<title>PyBites: What The Heck Is Yield For?</title>
+	<guid>https://pybit.es/articles/what-the-heck-is-yield-for/</guid>
+	<link>https://pybit.es/articles/what-the-heck-is-yield-for/</link>
+	<description>&lt;p&gt;A question came up recently about the purpose of the Python &lt;code&gt;yield&lt;/code&gt; expression and when you should use it. &lt;/p&gt;
+
+
+
+&lt;p&gt;Consider this silly function that computes a list of integers from 0 to 99 raised to the given exponent:&lt;/p&gt;
+
+
+
+&lt;div class=&quot;hcb_wrap&quot;&gt;&lt;pre class=&quot;prism undefined-numbers lang-python&quot;&gt;&lt;code&gt;def powers(exponent: int) -&amp;gt; list[int]:
+    return [n**exponent for n in range(0, 100)]
+
+&amp;gt;&amp;gt;&amp;gt; powers(2)
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225, 256, 289, 324, 361, 400, 441, 484, 529, 576, 625, 676, 729, 784, 841, 900, 961, 1024, 1089, 1156, 1225, 1296, 1369, 1444, 1521, 1600, 1681, 1764, 1849, 1936, 2025, 2116, 2209, 2304, 2401, 2500, 2601, 2704, 2809, 2916, 3025, 3136, 3249, 3364, 3481, 3600, 3721, 3844, 3969, 4096, 4225, 4356, 4489, 4624, 4761, 4900, 5041, 5184, 5329, 5476, 5625, 5776, 5929, 6084, 6241, 6400, 6561, 6724, 6889, 7056, 7225, 7396, 7569, 7744, 7921, 8100, 8281, 8464, 8649, 8836, 9025, 9216, 9409, 9604, 9801]
+&amp;gt;&amp;gt;&amp;gt; sum(powers(2))
+328350&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;When called, this function runs thru all 100 integers in the range computing each term and then returns the list to the caller. We can sum the list and get the expected result.&lt;/p&gt;
+
+
+
+&lt;p&gt;This function will return to the caller pretty quickly, however when the number of items being processed grows much larger, say two billion, then the delay between calling the function and getting back the result can be substantial. In addition to time, there is also a space consideration. One hundred items in a list is not a lot of memory:&lt;/p&gt;
+
+
+
+&lt;div class=&quot;hcb_wrap&quot;&gt;&lt;pre class=&quot;prism undefined-numbers lang-python&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; import sys
+&amp;gt;&amp;gt;&amp;gt; sys.getsizeof(list(range(0, 100)))
+856&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;This snippet tells us that a list of 100 integers is 856 bytes in memory. A 64-bit integer is 8 bytes so there is just a little bit of overhead, 56 bytes, associated with the list. Not too bad. But small programs rarely stay small. This little bit of code brought my laptop to its knees and took upwards of 60 seconds to complete:&lt;/p&gt;
+
+
+
+&lt;div class=&quot;hcb_wrap&quot;&gt;&lt;pre class=&quot;prism undefined-numbers lang-python&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; sys.getsizeof(list(range(0, 2_000_000_000)))
+16000000056&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;I generated a list of two billion integers and asked for its size. As expected, the two billion 64-bit integers takes up 16 billion bytes and there is a 56 byte overhead for the list. So not only did it take a long time to generate that list, that list is taking up a big chunk of memory real estate.&lt;/p&gt;
+
+
+
+&lt;p&gt;So where does yield come in to play here? Python treats functions with yield expressions differently than it does regular functions. Lets look at this generator function that performs the same operation as the &lt;code&gt;powers&lt;/code&gt; function:&lt;/p&gt;
+
+
+
+&lt;div class=&quot;hcb_wrap&quot;&gt;&lt;pre class=&quot;prism undefined-numbers lang-python&quot;&gt;&lt;code&gt;from typing import Generator
+
+def powers_generator(exponent: int) -&amp;gt; Generator[int, None, None]:
+    for n in range(0, 100):
+        yield n**exponent
+		
+&amp;gt;&amp;gt;&amp;gt; powers_generator(2)
+&amp;lt;generator object powers_generator at 0x10496e960&amp;gt;
+&amp;gt;&amp;gt;&amp;gt; sum(powers_generator(2))
+328350&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;This function is called the same way, however the return value type hinting is a little more complex. The&amp;nbsp;&lt;code&gt;Generator&lt;/code&gt;&amp;nbsp;type hint has three hint arguments; the&amp;nbsp;&lt;code&gt;yield&lt;/code&gt;&amp;nbsp;type hint, the&amp;nbsp;&lt;code&gt;send&lt;/code&gt;&amp;nbsp;type hint and the&amp;nbsp;&lt;code&gt;return&lt;/code&gt;&amp;nbsp;type hint. Starting with the return type hint, notice that&lt;code&gt;powers_generator&lt;/code&gt;&amp;nbsp;does not have a return expression and that agrees with the return type hint of&amp;nbsp;&lt;code&gt;None&lt;/code&gt;. I’m going to gloss over send and its uses right now, so it is also type hinted with None. That leaves the yield type hint,&amp;nbsp;&lt;code&gt;int&lt;/code&gt;, which agrees with the code in the body of the function.&lt;/p&gt;
+
+
+
+&lt;p&gt;When the&amp;nbsp;&lt;code&gt;powers_generator&lt;/code&gt;&amp;nbsp;function is called, it begins iterating thru the range of 0 to 100 and the yield expression immediately returns the computed value to the caller. This has two benefits; the caller gets the computed value quicker and there isn’t any additional memory consumed to hold all the computed values.&lt;/p&gt;
+
+
+
+&lt;p&gt;Notice that generator functions are used a little differently than other iterators. When we called the function it returned something weird:&lt;/p&gt;
+
+
+
+&lt;div class=&quot;hcb_wrap&quot;&gt;&lt;pre class=&quot;prism undefined-numbers lang-python&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; powers_generator(2)
+&amp;lt;generator object powers_generator at 0x10496ec00&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;It returned a generator object which is a kind of&amp;nbsp;&lt;strong&gt;Iterable&lt;/strong&gt;&amp;nbsp;(it has&amp;nbsp;&lt;code&gt;__iter__&lt;/code&gt;&amp;nbsp;and&amp;nbsp;&lt;code&gt;__next__&lt;/code&gt;&amp;nbsp;magic methods). Each time the generator’s&lt;code&gt;__next__&lt;/code&gt;&amp;nbsp;method is called, the function picks up just after the yield and starts executing until it yields again, raises an exception or returns.&lt;/p&gt;
+
+
+
+&lt;p&gt;What’s cool about that is the context of the function is available to it when it begins executing again. In the case of our toy function, it knows where it&amp;#8217;s at in the range of 0 to 99 and therefore the next value to compute.&lt;/p&gt;
+
+
+
+&lt;p&gt;Another difference between a generator function and an &lt;strong&gt;Iterable&lt;/strong&gt; like a list or a dictionary is generators are “single use”. If you have a list, you can iterate over it multiple times. However after a generator function returns it is &lt;em&gt;exhausted&lt;/em&gt;. Calling it again results in no values returned. For instance, in this next code example we create a list of powers of two and a generator. The list can be summed multiple times and produces the expected value, while summing the generator function works as expected the first time and results in zeros when summed again.&lt;/p&gt;
+
+
+
+&lt;div class=&quot;hcb_wrap&quot;&gt;&lt;pre class=&quot;prism undefined-numbers lang-python&quot;&gt;&lt;code&gt;&amp;gt;&amp;gt;&amp;gt; l = powers(2)
+&amp;gt;&amp;gt;&amp;gt; sum(l)
+328350
+&amp;gt;&amp;gt;&amp;gt; sum(l)
+328350
+
+&amp;gt;&amp;gt;&amp;gt; g = powers_generator(2)
+&amp;gt;&amp;gt;&amp;gt; sum(g)
+328350
+&amp;gt;&amp;gt;&amp;gt; sum(g)
+0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;Ok, yield expressions make generators and generators can reduce latency by returning values to the caller sooner and can reduce memory use by generating its values on the fly. But what do “real” programs use it for? One neat use is in creating context managers using the &lt;code&gt;contextlib.contextmanager&lt;/code&gt; decorator:&lt;/p&gt;
+
+
+
+&lt;div class=&quot;hcb_wrap&quot;&gt;&lt;pre class=&quot;prism undefined-numbers lang-python&quot;&gt;&lt;code&gt;from contextlib import contextmanager
+
+@contextmanager
+def manager():
+    print(&amp;quot;setup&amp;quot;)
+    yield
+    print(&amp;quot;teardown&amp;quot;)
+
+&amp;gt;&amp;gt;&amp;gt; with manager():
+...     print(&amp;quot;inside&amp;quot;)
+... 
+setup
+inside
+teardown&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+
+
+&lt;p&gt;Python context manager expressions begin with the&amp;nbsp;&lt;code&gt;with&lt;/code&gt;&amp;nbsp;keyword and can help manage a resource like an open file or a database connection. In this simple bit of code, we have some sophisticated behavior! Here we are simply printing out the different phases of a context manager; setup, inside and teardown. The yield in the&amp;nbsp;&lt;code&gt;manager&lt;/code&gt;&amp;nbsp;function gives the nested code in the body of the&amp;nbsp;&lt;code&gt;with&lt;/code&gt;&amp;nbsp;statement the opportunity to run. When the code block finishes, control is handed back to the manager function just after the yield.&lt;/p&gt;
+
+
+
+&lt;p&gt;The pytest package uses this pattern extensively to allow the user to create testing fixtures of arbitrary complexity.&lt;/p&gt;
+
+
+
+&lt;p&gt;Just remember, if you see yield in a function then it’s a generator. Generators are one-time use only but can reduce latency and conserve memory.&lt;/p&gt;</description>
+	<pubDate>Wed, 11 Oct 2023 16:06:07 +0000</pubDate>
+</item>
+<item>
+	<title>John Cook: Python code for means</title>
+	<guid>https://www.johndcook.com/blog/2023/10/11/python-agm/</guid>
+	<link>https://www.johndcook.com/blog/2023/10/11/python-agm/</link>
+	<description>&lt;p&gt;The last couple article have looked at various kinds of mean. The Python code for four of these means is trivial:&lt;/p&gt;
+&lt;pre&gt;gm  = lambda a, b: (a*b)**0.5
+am  = lambda a, b: (a + b)/2
+hm  = lambda a, b: 2*a*b/(a+b)
+chm = lambda a, b: (a**2 + b**2)/(a + b)
+&lt;/pre&gt;
+&lt;p&gt;But the &lt;a href=&quot;https://www.johndcook.com/blog/2021/04/05/arithmetic-geometric-mean/&quot;&gt;arithmetic-geometric mean&lt;/a&gt; (AGM) is not trivial:&lt;/p&gt;
+&lt;pre&gt;from numpy import pi
+from scipy.special import ellipk
+
+agm = lambda a, b: 0.25*pi*(a + b)/ellipk((a - b)**2/(a + b)**2) 
+&lt;/pre&gt;
+&lt;p&gt;The arithmetic-geometric mean is defined by iterating the arithmetic and geometric means and taking the limit. This iteration converges very quickly, and so writing code that directly implements the definition is efficient.&lt;/p&gt;
+&lt;p&gt;But the AGM can also be computed via a special function &lt;em&gt;K&lt;/em&gt;, the &amp;#8220;complete elliptic integral of the first kind,&amp;#8221; which makes the code above more compact. This is conceptually nice because we can think of the AGM as a simple function, not an iterative process.&lt;/p&gt;
+&lt;p&gt;But how is &lt;em&gt;K&lt;/em&gt; evaluated? In some sense it doesn&amp;#8217;t matter: it&amp;#8217;s encapsulated in the SciPy library. But someone has to write SciPy. I haven&amp;#8217;t looked at the SciPy source code, but usually &lt;em&gt;K&lt;/em&gt; is calculated numerically using the AGM because, as we said above, the AGM converges very quickly.&lt;/p&gt;
+&lt;p&gt;&lt;img class=&quot;aligncenter size-medium&quot; src=&quot;https://www.johndcook.com/AGM_meme2.jpg&quot; alt=&quot;Bell curve meme: How to calculate the AGM? The left and right tails say to use a while loop. The middle says to evaluate a complete ellliptic integral of the first kind.&quot; width=&quot;675&quot; height=&quot;499&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;This fits the pattern of a bell curve meme: the novice and expert approaches are the same, but for different reasons. The novice uses an iterative approach because that directly implements the definition. The expert knows about the elliptic integral, but also knows that the iterative approach suggested by the definition is remarkably efficient and eliminates the need to import a library.&lt;/p&gt;
+&lt;p&gt;Although it&amp;#8217;s easy to implement the AGM with a while loop, the code above does have some advantages. For one thing, it pushes the responsibility for validation and exception handling onto the library. On the other hand, the code is easy to get wrong because there are two conventions on how to parameterize &lt;em&gt;K&lt;/em&gt; and you have to be sure to use the same one your library uses.&lt;/p&gt;The post &lt;a href=&quot;https://www.johndcook.com/blog/2023/10/11/python-agm/&quot;&gt;Python code for means&lt;/a&gt; first appeared on &lt;a href=&quot;https://www.johndcook.com/blog&quot;&gt;John D. Cook&lt;/a&gt;.</description>
+	<pubDate>Wed, 11 Oct 2023 16:05:18 +0000</pubDate>
+</item>
+<item>
+	<title>Daniel Roy Greenfeld: TIL: Capture stdout &amp;amp; stderr with pytest</title>
+	<guid>https://daniel.feldroy.com/posts/til-2023-10-capture-stdout-stderr-with-pytest</guid>
+	<link>https://daniel.feldroy.com/posts/til-2023-10-capture-stdout-stderr-with-pytest</link>
+	<description>&lt;p&gt;I wish I knew this earlier, but I know it now thanks to &lt;a href=&quot;https://www.codyantunez.com/&quot;&gt;Cody Antunez&lt;/a&gt;. Here it is:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;import sys
+
+def test_myoutput(capsys):  # or use &quot;capfd&quot; for fd-level
+
+    # Write some text
+    print(&quot;hello&quot;)
+    sys.stderr.write(&quot;world\n&quot;)
+
+    # Capture the text
+    captured = capsys.readouterr()
+
+    # Test the captured output, both std and err
+    assert captured.out == &quot;hello\n&quot;
+    assert captured.err == &quot;world\n&quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;In the &lt;a href=&quot;https://docs.pytest.org/en/latest/how-to/capture-stdout-stderr.html#accessing-captured-output-from-a-test-function&quot;&gt;pytest docs&lt;/a&gt; it describes the fixtures to capture binary and more.&lt;/p&gt;</description>
+	<pubDate>Wed, 11 Oct 2023 15:45:00 +0000</pubDate>
+</item>
+
+</channel>
+</rss>
